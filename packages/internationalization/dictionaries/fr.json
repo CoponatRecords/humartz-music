@@ -131,11 +131,11 @@
           },
           {
             "question": "What is the Solana Anchor?",
-            "answer": "We take the digital fingerprint (Keccak256 hash) of your certificate and write it to the Solana blockchain. This proves that your certificate existed at a specific time and hasn't been altered."
+            "answer": "We take the digital fingerprint (Keccak256 merkle root hash) of your certificate and write it to the Solana blockchain. This proves that your certificate existed at a specific time and hasn't been altered."
           },
           {
             "question": "Are my files safe?",
-            "answer": "Yes. We use enterprise-grade encrypted storage. We NEVER publish your raw stems or project files. Only the cryptographic hash is made public."
+            "answer": "Yes. We use enterprise-grade encrypted storage. We ONLY use store your raw stems or project files during the certification process. Then they are deleted, and only the cryptographic hash is made public."
           },
           {
             "question": "How long does verification take?",

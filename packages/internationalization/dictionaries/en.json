@@ -130,7 +130,7 @@
           },
           {
             "question": "What is the Solana Anchor?",
-            "answer": "We take the digital fingerprint (Keccak256 hash) of your certificate and write it to the Solana blockchain. This proves that your certificate existed at a specific time and hasn't been altered."
+            "answer": "We take a digital fingerprint (Keccak256 merkle root hash) of your certificate and write it to the Solana blockchain. This proves that your certificate existed at a specific time and hasn't been altered."
           },
           {
             "question": "Are my files safe?",

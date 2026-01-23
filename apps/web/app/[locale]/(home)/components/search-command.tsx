@@ -10,7 +10,7 @@ import { MerkleTree } from "merkletreejs";
 import keccak256 from "keccak256";
 
 // --- CONFIGURATION ---
-const EXPECTED_ROOT = "0x32de118ff8f4635be515eeb7d9573016219a27fc51ae6d2d07a4d73458d63c1e";
+const EXPECTED_ROOT = "0x0f289b7895d86ad153dcaea4ff3479cf4bd0dd7ea84ec1be26ab12a7b115199d";
 
 // --- TYPES ---
 type TrackResult = SearchResults['tracks'][0] & { merkleLeaf?: string | null };

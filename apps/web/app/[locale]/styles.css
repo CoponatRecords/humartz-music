@@ -36,3 +36,40 @@
   content: attr(title);
   @apply inline-block text-muted-foreground text-right mb-6 text-sm;
 }
+
+
+@import "@repo/design-system/styles/globals.css";
+
+/* ----------------------------- */
+/* Existing Shiki code styles ... */
+/* ----------------------------- */
+
+/* Abstract background - light mode */
+.abstract-background {
+  background-color: var(--background); /* uses design system bg variable */
+  background-image:
+    radial-gradient(circle, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.02),
+      rgba(0, 0, 0, 0.02) 1px,
+      transparent 1px,
+      transparent 20px
+    );
+  background-size: 20px 20px, 40px 40px;
+  background-repeat: repeat;
+}
+
+/* Abstract background - dark mode */
+.dark .abstract-background {
+  background-color: var(--background); /* dark background from design system */
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.02),
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px,
+      transparent 20px
+    );
+}

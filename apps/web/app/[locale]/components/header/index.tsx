@@ -47,14 +47,6 @@ export const Header = ({ dictionary }: HeaderProps) => {
     },
   ];
 
-  // Logic to add External Docs URL if it exists (Optional, you can keep or remove)
-  if (env.NEXT_PUBLIC_DOCS_URL) {
-    navigationItems.push({
-      title: dictionary.web.header.docs,
-      href: env.NEXT_PUBLIC_DOCS_URL,
-      description: "",
-    });
-  }
 
   const [isOpen, setOpen] = useState(false);
   return (
@@ -112,23 +104,34 @@ export const Header = ({ dictionary }: HeaderProps) => {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <div className="flex items-center gap-2 lg:justify-center">
-                    <p className="whitespace-nowrap font-semibold">Humartz</p>
+        <div className="container relative mx-auto min-h-20 grid items-center grid-cols-3 gap-4">
+  {/* Left: Desktop Nav */}
+  <div className="hidden lg:flex items-center justify-start gap-4">
+    {/* NavigationMenu code */}
+  </div>
 
-<svg
-  className="-translate-y-[0.5px] h-[18px] w-[18px] fill-current"
-  fill="none"
-  height="24"
-  viewBox="0 0 24 24"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <title>Humartz Fingerprint</title>
-  <path
-    d="M12 2C7.5 2 4 5.5 4 10V16C4 16.55 4.45 17 5 17C5.55 17 6 16.55 6 16V10C6 6.5 8.5 4 12 4C15.5 4 18 6.5 18 10V18C18 18.55 18.45 19 19 19C19.55 19 20 18.55 20 18V10C20 5.5 16.5 2 12 2ZM12 6C9.5 6 7.5 8 7.5 10.5V17C7.5 17.55 7.95 18 8.5 18C9.05 18 9.5 17.55 9.5 17V10.5C9.5 9 10.5 8 12 8C13.5 8 14.5 9 14.5 10.5V16C14.5 16.55 14.95 17 15.5 17C16.05 17 16.5 16.55 16.5 16V10.5C16.5 8 14.5 6 12 6ZM12 10C11.5 10 11 10.5 11 11V16C11 16.55 11.45 17 12 17C12.55 17 13 16.55 13 16V11C13 10.5 12.5 10 12 10Z"
-    fill="currentColor"
-  />
-</svg>
-        </div>
+  {/* Center: Logo */}
+  {/* Center: Logo */}
+<div className="flex items-center justify-center gap-2">
+  <p className="whitespace-nowrap font-semibold text-lg hidden sm:inline">
+    Humartz
+  </p>
+  <svg
+    className="h-5 w-5 fill-current"
+    fill="none"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title>Humartz Fingerprint</title>
+    <path
+      d="M12 2C7.5 2 4 5.5 4 10V16C4 16.55 4.45 17 5 17C5.55 17 6 16.55 6 16V10C6 6.5 8.5 4 12 4C15.5 4 18 6.5 18 10V18C18 18.55 18.45 19 19 19C19.55 19 20 18.55 20 18V10C20 5.5 16.5 2 12 2ZM12 6C9.5 6 7.5 8 7.5 10.5V17C7.5 17.55 7.95 18 8.5 18C9.05 18 9.5 17.55 9.5 17V10.5C9.5 9 10.5 8 12 8C13.5 8 14.5 9 14.5 10.5V16C14.5 16.55 14.95 17 15.5 17C16.05 17 16.5 16.55 16.5 16V10.5C16.5 8 14.5 6 12 6ZM12 10C11.5 10 11 10.5 11 11V16C11 16.55 11.45 17 12 17C12.55 17 13 16.55 13 16V11C13 10.5 12.5 10 12 10Z"
+      fill="currentColor"
+    />
+  </svg>
+</div></div>
+
+
+
         <div className="flex w-full justify-end gap-4">
           <Button asChild className="hidden md:inline" variant="ghost">
             <Link href="/contact">{dictionary.web.header.contact}</Link>

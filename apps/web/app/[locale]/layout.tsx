@@ -30,9 +30,12 @@ const RootLayout = async ({ children, params }: RootLayoutProperties) => {
       <body>
         <AnalyticsProvider>
           <DesignSystemProvider>
+              <div className="abstract-background min-h-screen flex flex-col">
             <Header dictionary={dictionary} />
             {children}
             <Footer />
+            </div>
+
           </DesignSystemProvider>
           <Toolbar />
           <CMSToolbar />
