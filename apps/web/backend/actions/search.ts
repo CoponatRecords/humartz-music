@@ -31,16 +31,28 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
     const [tracks, artists] = await Promise.all([
       // 1. Search Tracks
       prisma.track.findMany({
-        where: {
-          published: true, // Must be published regardless of search match
-          // USE OR OPERATOR HERE
-          OR: [
-            // Match Title...
-            { title: { contains: cleanQuery, mode: "insensitive" } },
-            // ...OR Match Merkle Leaf (Hash)
-            { merkleLeaf: { contains: cleanQuery, mode: "insensitive" } }
-          ]
-        },
+       where: {
+  // published: true, // Note: Your schema doesn't actually have a 'published' field on Track yet, so keep this commented out or verify against 'releaseDate'.
+  
+  OR: [
+    // 1. Search Track Title
+    { title: { contains: cleanQuery, mode: "insensitive" } },
+    
+    // 2. Search Merkle Leaf
+    { merkleLeaf: { contains: cleanQuery, mode: "insensitive" } },
+
+    // 3. Search Artist Name (Through the TrackArtist join table)
+    { 
+      artists: { 
+        some: { 
+          artist: {
+            name: { contains: cleanQuery, mode: "insensitive" }
+          }
+        } 
+      } 
+    }
+  ]
+},
         take: 5,
         select: {
           id: true,
