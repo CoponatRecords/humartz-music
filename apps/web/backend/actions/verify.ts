@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from '../../backend/hello-prisma/prisma'; // Adjust path to your prisma client
+import { prisma } from '@backend/hello-prisma/prisma'; // Adjust path to your prisma client
 import { MerkleTree } from 'merkletreejs';
 import keccak256 from 'keccak256';
 

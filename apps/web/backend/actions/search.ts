@@ -1,7 +1,7 @@
 // app/actions/search.ts
 "use server";
 
-import { prisma } from '../hello-prisma/prisma';
+import { prisma } from '@backend/hello-prisma/prisma';
 
 export type SearchResults = {
   tracks: { 
