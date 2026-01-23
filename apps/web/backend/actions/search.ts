@@ -6,6 +6,7 @@ import { prisma } from '../hello-prisma/prisma';
 export type SearchResults = {
   tracks: { 
     id: number; 
+    merkleLeaf: string | null;
     title: string; 
     slug: string; 
     artistName: string; 
@@ -31,15 +32,22 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
       // 1. Search Tracks
       prisma.track.findMany({
         where: {
-          title: { contains: cleanQuery, mode: "insensitive" },
-          published: true,
+          published: true, // Must be published regardless of search match
+          // USE OR OPERATOR HERE
+          OR: [
+            // Match Title...
+            { title: { contains: cleanQuery, mode: "insensitive" } },
+            // ...OR Match Merkle Leaf (Hash)
+            { merkleLeaf: { contains: cleanQuery, mode: "insensitive" } }
+          ]
         },
         take: 5,
         select: {
           id: true,
           title: true,
           slug: true,
-          isVerified: true, // <--- FIX: Select the actual DB column name
+          isVerified: true,
+          merkleLeaf: true, 
           artists: {
             take: 1,
             where: { role: "MAIN" },
@@ -60,15 +68,14 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
       id: t.id,
       title: t.title,
       slug: t.slug,
+      merkleLeaf: t.merkleLeaf, 
       artistName: t.artists[0]?.artist.name || "Unknown Artist",
-      // Map the DB field 'isVerified' to the frontend prop 'verificationStatus'
       verificationStatus: t.isVerified, 
     }));
 
     // 4. Format Artists
     const formattedArtists = artists.map((a) => ({
       ...a,
-      // If artists don't have this field yet, leave as null or hardcode logic
       verificationStatus: null, 
     }));
 

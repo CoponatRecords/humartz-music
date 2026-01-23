@@ -23,11 +23,17 @@ type HeaderProps = {
 };
 
 export const Header = ({ dictionary }: HeaderProps) => {
+  // --- UPDATED NAVIGATION ITEMS ---
   const navigationItems = [
     {
       title: dictionary.web.header.home,
       href: "/",
       description: "",
+    },
+    {
+      title: dictionary.web.header.whitepaper,
+      href: "/whitepaper",
+      description: "Read the technical protocol.",
     },
     {
       title: dictionary.web.header.product.title,
@@ -39,18 +45,9 @@ export const Header = ({ dictionary }: HeaderProps) => {
         },
       ],
     },
-    // {
-    //   title: dictionary.web.header.blog,
-    //   href: "/blog",
-    //   description: "",
-    // },
-        {
-      title: dictionary.web.header.product.pricing,
-      href: "/pricing",
-      description: "",
-    },
   ];
 
+  // Logic to add External Docs URL if it exists (Optional, you can keep or remove)
   if (env.NEXT_PUBLIC_DOCS_URL) {
     navigationItems.push({
       title: dictionary.web.header.docs,
@@ -143,16 +140,6 @@ export const Header = ({ dictionary }: HeaderProps) => {
           <div className="hidden md:inline">
             <ModeToggle />
           </div>
-          {/* <Button asChild className="hidden md:inline" variant="outline">
-            <Link href={`${env.NEXT_PUBLIC_APP_URL}/sign-in`}>
-              {dictionary.web.header.signIn}
-            </Link>
-          </Button>
-          <Button asChild>
-            <Link href={`${env.NEXT_PUBLIC_APP_URL}/sign-up`}>
-              {dictionary.web.header.signUp}
-            </Link>
-          </Button> */}
         </div>
         <div className="flex w-12 shrink items-end justify-end lg:hidden">
           <Button onClick={() => setOpen(!isOpen)} variant="ghost">

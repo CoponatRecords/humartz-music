@@ -59,7 +59,7 @@
         "items": [
           {
             "title": "Tracks Certified",
-            "metric": "500",
+            "metric": "100K+",
             "delta": "15",
             "type": "unit"
           },
@@ -131,7 +131,7 @@
           },
           {
             "question": "What is the Solana Anchor?",
-            "answer": "We take the digital fingerprint (hash) of your certificate and write it to the Solana blockchain. This proves that your certificate existed at a specific time and hasn't been altered."
+            "answer": "We take the digital fingerprint (Keccak256 hash) of your certificate and write it to the Solana blockchain. This proves that your certificate existed at a specific time and hasn't been altered."
           },
           {
             "question": "Are my files safe?",

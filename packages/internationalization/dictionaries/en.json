@@ -11,8 +11,7 @@
         "description": "Prove your music is 100% human-made.",
         "pricing": "Pricing"
       },
-      "blog": "Blog",
-      "docs": "Docs",
+      "whitepaper": "Whitepaper",
       "contact": "Contact",
       "signIn": "Sign in",
       "signUp": "Start Verification"
@@ -59,7 +58,7 @@
         "items": [
           {
             "title": "Tracks Certified",
-            "metric": "500",
+            "metric": "100000",
             "delta": "15",
             "type": "unit"
           },
@@ -71,7 +70,7 @@
           },
           {
             "title": "Blockchain Anchors",
-            "metric": "5000",
+            "metric": "10",
             "delta": "100",
             "type": "unit"
           },
@@ -131,7 +130,7 @@
           },
           {
             "question": "What is the Solana Anchor?",
-            "answer": "We take the digital fingerprint (hash) of your certificate and write it to the Solana blockchain. This proves that your certificate existed at a specific time and hasn't been altered."
+            "answer": "We take the digital fingerprint (Keccak256 hash) of your certificate and write it to the Solana blockchain. This proves that your certificate existed at a specific time and hasn't been altered."
           },
           {
             "question": "Are my files safe?",
