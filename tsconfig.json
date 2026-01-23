@@ -19,7 +19,9 @@
     "strictNullChecks": true,
         "paths": {
       "@backend/*": ["apps/web/backend/*"]
-    }
-
+    },
+    
+  "scripts": {
+    "postinstall": "npm run generate -w @backend/hello-prisma"
   }
 }
