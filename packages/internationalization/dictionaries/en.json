@@ -59,27 +59,16 @@
           {
             "title": "Tracks Certified",
             "metric": "100000",
-            "delta": "15",
+            "delta": "100",
             "type": "unit"
           },
           {
             "title": "Artists Protected",
             "metric": "120",
-            "delta": "8",
-            "type": "unit"
-          },
-          {
-            "title": "Blockchain Anchors",
-            "metric": "10",
             "delta": "100",
             "type": "unit"
-          },
-          {
-            "title": "Verification Rate",
-            "metric": "98",
-            "delta": "2",
-            "type": "percentage"
           }
+        
         ]
       },
       "testimonials": {

@@ -216,7 +216,7 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
 
                             <div className="flex flex-col gap-1">
                                 <span className="flex items-center text-xs font-semibold text-muted-foreground uppercase">
-                                <Fingerprint className="mr-1.5 h-3 w-3" /> Proof Hash
+                                <Fingerprint className="mr-1.5 h-3 w-3" /> Proof Folder Hash
                                 </span>
                                 <div className="flex items-center gap-2">
                                     <code className="flex-1 break-all font-mono text-[10px] bg-background/50 p-2 rounded border text-muted-foreground">
