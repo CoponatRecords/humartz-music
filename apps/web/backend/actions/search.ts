@@ -32,7 +32,6 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
       // 1. Search Tracks
       prisma.track.findMany({
        where: {
-  // published: true, // Note: Your schema doesn't actually have a 'published' field on Track yet, so keep this commented out or verify against 'releaseDate'.
   
   OR: [
     // 1. Search Track Title
@@ -76,7 +75,7 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
     ]);
 
     // 3. Format Tracks
-    const formattedTracks = tracks.map((t) => ({
+    const formattedTracks = tracks.map((t: { id: any; title: any; slug: any; merkleLeaf: any; artists: { artist: { name: any; }; }[]; isVerified: any; }) => ({
       id: t.id,
       title: t.title,
       slug: t.slug,
@@ -86,7 +85,7 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
     }));
 
     // 4. Format Artists
-    const formattedArtists = artists.map((a) => ({
+    const formattedArtists = artists.map((a: any) => ({
       ...a,
       verificationStatus: null, 
     }));
