@@ -1,5 +1,5 @@
 // check-db.ts
-import { prisma } from './hello-prisma/prisma';
+import { prisma } from '@prisma/prisma';
 
 
 async function main() {
