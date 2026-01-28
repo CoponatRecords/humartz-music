@@ -106,7 +106,7 @@ const WhitePaperPage = async ({ params }: PageProps) => {
 
             {/* 2. The Solution */}
             <section className="mb-16">
-              <h2 className="text-2xl font-semibold tracking-tight mb-4">2. The Solution: Cryptographically Frozen Archive</h2>
+              <h2 className="text-2xl font-semibold tracking-tight mb-4">2. The Solution</h2>
               <p className="text-muted-foreground leading-7 mb-6">
                 Humartz provides <strong>public cryptographic proof</strong> of your creation's provenance, by anchoring its human status to the blockchain.
               </p>
