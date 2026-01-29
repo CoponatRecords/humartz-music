@@ -158,7 +158,7 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
                     <Input
                       id="greeting"
                       type="text"
-                      placeholder="Write your Proof Folder Hash on the Blockchain !"
+                      placeholder="Write your Proof Folder Hash on the  !"
                       value={greeting}
                       onChange={(e) => setGreeting(e.target.value)}
                       required
