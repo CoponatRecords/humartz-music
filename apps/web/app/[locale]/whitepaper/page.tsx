@@ -198,7 +198,7 @@ const WhitePaperPage = async ({ params }: PageProps) => {
 
             {/* 5. Economic Model */}
             <section className="mb-16">
-              <h2 className="text-2xl font-semibold tracking-tight mb-4">5. Economic Model</h2>
+              <h2 className="text-2xl font-semibold tracking-tight mb-4">4. Economic Model</h2>
               <p className="text-muted-foreground leading-7">
                 Humartz operates as a certification protocol. Fees are assessed per certification, reflecting the computational, verification, and anchoring costs associated with establishing human provenance.
               </p>
