@@ -11,8 +11,7 @@
         "description": "Prove your music is 100% human-made.",
         "pricing": "Pricing"
       },
-      "blog": "Blog",
-      "docs": "Docs",
+      "whitepaper": "Whitepaper",
       "contact": "Contact",
       "signIn": "Sign in",
       "signUp": "Start Verification"
@@ -59,28 +58,17 @@
         "items": [
           {
             "title": "Tracks Certified",
-            "metric": "100K+",
-            "delta": "15",
+            "metric": "100000",
+            "delta": "100",
             "type": "unit"
           },
           {
             "title": "Artists Protected",
             "metric": "120",
-            "delta": "8",
-            "type": "unit"
-          },
-          {
-            "title": "Blockchain Anchors",
-            "metric": "5000",
             "delta": "100",
             "type": "unit"
-          },
-          {
-            "title": "Verification Rate",
-            "metric": "98",
-            "delta": "2",
-            "type": "percentage"
           }
+        
         ]
       },
       "testimonials": {
@@ -131,11 +119,11 @@
           },
           {
             "question": "What is the Solana Anchor?",
-            "answer": "We take the digital fingerprint (Keccak256 merkle root hash) of your certificate and write it to the Solana blockchain. This proves that your certificate existed at a specific time and hasn't been altered."
+            "answer": "We take a digital fingerprint (Keccak256 merkle root hash) of your certificate and write it to the Solana blockchain. This proves that your certificate existed at a specific time and hasn't been altered."
           },
           {
             "question": "Are my files safe?",
-            "answer": "Yes. We use enterprise-grade encrypted storage. We ONLY use store your raw stems or project files during the certification process. Then they are deleted, and only the cryptographic hash is made public."
+            "answer": "Yes. We use enterprise-grade encrypted storage. We NEVER publish your raw stems or project files. Only the cryptographic hash is made public."
           },
           {
             "question": "How long does verification take?",
@@ -184,6 +172,39 @@
           "firstName": "First name",
           "lastName": "Last name",
           "resume": "Upload press kit (optional)",
+          "cta": "Send Message"
+        }
+      }
+    },
+    "upload": {
+      "meta": {
+        "title": "Upload your files",
+        "description": "Upload your files to a free file sharing service and send us the link for verification using the provided form."
+      },
+      "hero": {
+        "benefits": [
+          {
+            "title": "WeTransfer",
+            "description": "Create a link by selecting the three dots."
+          },
+          {
+            "title": "SwissTransfer",
+            "description": "Create a link by selecting the link option, and your email address for a verification code."
+          },
+          {
+            "title": "Support",
+            "description": "For API or direct upload access, please contact us at verification@humartz.com"
+          }
+        ],
+        "form": {
+          "title": "Upload folder",
+          "date": "Date",
+          "firstName": "First name",
+          "lastName": "Last name",
+          "downloadLink": "Download Link",
+          "artistName": "Last name",
+          "isrc": "Track ISRC",
+          "album": "Album title",
           "cta": "Send Message"
         }
       }

@@ -22,7 +22,7 @@ export const CTA = ({ dictionary }: CTAProps) => (
         </div>
         <div className="flex flex-row gap-4">
           <Button asChild className="gap-4" variant="outline">
-            <Link href="/contact">
+            <Link href="/upload">
               {dictionary.web.global.primaryCta}{" "}
               <PhoneCall className="h-4 w-4" />
             </Link>

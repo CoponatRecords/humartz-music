@@ -175,6 +175,39 @@
           "cta": "Send Message"
         }
       }
+    },
+    "upload": {
+      "meta": {
+        "title": "Upload your files",
+        "description": "Upload your session files to a free file sharing service and send us the link for verification using the provided form."
+      },
+      "hero": {
+        "benefits": [
+          {
+            "title": "WeTransfer",
+            "description": "Create a link by selecting the three dots."
+          },
+          {
+            "title": "SwissTransfer",
+            "description": "Create a link by selecting the link option, and your email address for a verification code."
+          },
+          {
+            "title": "Support",
+            "description": "For API, direct upload access, or upload-free verification, please contact us at contact@humartz.com or using the contact form"
+          }
+        ],
+        "form": {
+          "title": "Upload your folder",
+          "date": "Date",
+          "firstName": "First name",
+          "lastName": "Last name",
+          "downloadLink": "Download Link",
+          "artistName": "Last name",
+          "isrc": "Track ISRC",
+          "album": "Album title",
+          "cta": "Send Message"
+        }
+      }
     }
   }
 }

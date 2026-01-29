@@ -6,7 +6,7 @@ import { Hero } from "./components/hero";
 import { Social } from "./components/social";
 
 export const metadata: Metadata = {
-  title: "Production-grade Turborepo template for Next.js apps | next-forge",
+  title: "Production-grade Turborepo template for Next.js apps ",
   description:
     "A monorepo template designed to have everything you need to build your new SaaS app as thoroughly as possible. Free and open source, forever.",
 };

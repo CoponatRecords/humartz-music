@@ -52,9 +52,6 @@ export const Hero = async ({ dictionary }: HeroProps) => (
             </Link>
           </Button>
           <Button asChild className="gap-2 sm:gap-4 w-full sm:w-auto" size="lg">
-            {/* <Link href={env.NEXT_PUBLIC_APP_URL}>
-              Sign up <MoveRight className="h-4 w-4 sm:h-5 sm:w-5" />
-            </Link> */}
           </Button>
         </div>
 
