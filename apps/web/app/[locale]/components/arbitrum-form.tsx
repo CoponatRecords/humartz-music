@@ -28,6 +28,7 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
   // READ STATE
   const [readHash, setReadHash] = useState("");
   const [readResult, setReadResult] = useState<string | null>(null);
+  const [readTxLink, setReadTxLink] = useState<string | null>(null);
   const [isReading, setIsReading] = useState(false);
   const [readError, setReadError] = useState<string | null>(null);
 
@@ -77,6 +78,7 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
     e.preventDefault();
     setReadError(null);
     setReadResult(null);
+    setReadTxLink(null);
     setIsReading(true);
 
     if (!window.ethereum) {
@@ -93,14 +95,21 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
       const tx = await provider.getTransaction(readHash);
       if (!tx) throw new Error("Transaction not found");
 
-      // Decode the input using the ABI
-      const iface = new Interface(CONTRACT_ABI);
-      const decoded = iface.decodeFunctionData("setGreeting", tx.data);
-      setReadResult(decoded._greeting);
+      let decoded: string;
+      try {
+        const iface = new Interface(CONTRACT_ABI);
+        const parsed = iface.decodeFunctionData("setGreeting", tx.data);
+        decoded = parsed._greeting;
+      } catch {
+        // fallback: show raw input if not decodable
+        decoded = tx.data;
+      }
 
+      setReadResult(decoded);
+      setReadTxLink(`https://arbiscan.io/tx/${readHash}`);
     } catch (err: any) {
       console.error(err);
-      setReadError(err.message || "Failed to decode transaction");
+      setReadError(err.message || "Failed to read transaction");
     } finally {
       setIsReading(false);
     }
@@ -115,7 +124,7 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
           <div className="flex flex-col gap-4">
             <h4 className="text-3xl md:text-5xl font-regular tracking-tighter">On-Chain Interaction</h4>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-sm">
-              Securely write and read data on the Arbitrum L2 network. Ensure your wallet is connected to the correct RPC.
+              Securely write and read data on the Arbitrum L2 blockchain. Ensure your wallet is connected to the correct RPC.
             </p>
           </div>
 
@@ -141,10 +150,14 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
             </div>
           )}
 
-          {readResult && (
+          {readResult && readTxLink && (
             <div className="mt-6 p-4 rounded-md bg-green-50 text-green-700">
-              <p className="font-medium">Greeting in transaction:</p>
+                              <a href={readTxLink} target="_blank" rel="noopener noreferrer"
+                 className="font-medium hover:underline mt-2 block">
+                Transaction Data
+              </a>
               <p className="break-words">{readResult}</p>
+
             </div>
           )}
         </div>
@@ -162,7 +175,7 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
                 <div>
                   <h3 className="text-xl font-medium">Success!</h3>
                   <p className="text-muted-foreground mt-2 text-sm">
-                    Your greeting has been recorded on the Arbitrum blockchain.
+                    Your data has been recorded on the Arbitrum blockchain.
                   </p>
                 </div>
                 <Button variant="outline" className="mt-4" onClick={() => { setIsSuccess(false); setGreeting(""); setTxHash(null); }}>
@@ -176,7 +189,7 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
                   <p className="font-semibold text-lg">Archive on the blockchain</p>
                 </div>
                 <div className="grid w-full items-center gap-1.5">
-                  <Label htmlFor="greeting">Submit Greeting</Label>
+                  <Label htmlFor="greeting">Submit Data</Label>
                   <Input id="greeting" type="text" placeholder="Write your Proof Folder Hash on the Blockchain !"
                     value={greeting} onChange={(e) => setGreeting(e.target.value)} required />
                 </div>
@@ -200,7 +213,7 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
             <form onSubmit={readGreetingByTxHash} className="flex flex-col gap-4">
               <div className="flex items-center gap-2 mb-2">
                 <Wallet className="h-5 w-5 text-primary" />
-                <p className="font-semibold text-lg">Read Blockchain by Transaction Hash</p>
+                <p className="font-semibold text-lg">Read by Transaction Hash</p>
               </div>
               <div className="grid w-full items-center gap-1.5">
                 <Label htmlFor="readHash">Transaction Hash</Label>

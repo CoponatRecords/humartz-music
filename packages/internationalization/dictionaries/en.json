@@ -226,28 +226,30 @@
             "description": "Integrate Humartz verification status into your own platform or player."
           }
         ],
-  "description_title_1":"2 - Upload the folder",
-   "description_title_2":"1 - Create a single folder with: ",
-     "description_title_3":"2 - Wait for review",
+        
+  "description_title_1": "Step 1 – Prepare a Single Folder Containing:",
+  "description_title_2": "Step 2 – Upload Your Folder",
+  "description_title_3": "Step 3 – Upload The File We Are Certifying",
+  "description_title_4": "And Wait for Our Review ! We will get back to you shortly with the certification results.",
 
-    "description_subtitle_1":"And wait for the review ! We will get back to you shortly.",
-      "description_subtitle_21":"• Your proof of identity",
+  "description_subtitle_1": "Once uploaded, our team will review your submission and get back to you shortly.",
+  "description_subtitle_21": "• A valid proof of identity (ID, passport, or driver’s license)",
+  "description_subtitle_22": "• All original material including stems, MIDI files, audio recordings, and project files created during production",
+  "description_subtitle_23": "• No need to zip or compress files – just select and upload the entire folder as-is",
 
-    "description_subtitle_22":"• All original stems, MIDI files, audio recordings and project files generated during the creation process",
-    "description_subtitle_23":"• No need to zip archives – simply select the entire folder",
+  "uploadTitle": "Upload Your Folder for Review",
+  "chooseFile": "Select the folder from your computer that contains all required files",
+  "uploadButton": "Start Upload",
+  "uploading": "Uploading files…",
+  "noFiles": "No files selected.",
+  "download": "Download",
+  "delete": "Delete",
+  "successUpload": "Folder uploaded successfully!",
+  "errorUpload": "There was an error uploading your folder.",
+  "successDelete": "Folder deleted successfully!",
+  "errorDelete": "Error deleting folder.",
+  "cancel": "Cancel"
 
-    "uploadTitle": "Upload Your Files For Review",
-    "chooseFile": "Select the proof folder on your computer",
-    "uploadButton": "Upload",
-    "uploading": "Uploading...",
-    "noFiles": "No files found.",
-    "download": "Download",
-    "delete": "Delete",
-    "successUpload": "File uploaded successfully!",
-    "errorUpload": "Error uploading file",
-    "successDelete": "File deleted successfully!",
-    "errorDelete": "Error deleting file",
-    "cancel": "Cancel"
   }
 
   

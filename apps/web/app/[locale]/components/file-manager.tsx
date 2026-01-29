@@ -4,7 +4,7 @@ import { Button } from "@repo/design-system/components/ui/button";
 import { Input } from "@repo/design-system/components/ui/input";
 import { Label } from "@repo/design-system/components/ui/label";
 import type { Dictionary } from "@repo/internationalization";
-import { CheckCircle2, Loader2, Upload, FolderKanban } from "lucide-react";
+import { CheckCircle2, Loader2, Upload, FolderKanban, Loader, Headphones, Clock } from "lucide-react";
 import Link from "next/link";
 import { useState, FormEvent } from "react";
 import { hashFolder } from "../hashFolder";
@@ -188,10 +188,16 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
                 <FolderKanban className="mt-1 h-6 w-6 text-primary shrink-0" />
                 <div>
                   <p className="font-medium text-lg">
-                    {dictionary.web?.upload?.files?.description_title_2 || "Organized & traceable uploads"}
+                    {dictionary.web?.upload?.files?.description_title_1 || "Organized & traceable uploads"}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
                     {dictionary.web?.upload?.files?.description_subtitle_21}
+                  </p>
+                                    <p className="text-sm text-muted-foreground mt-1">
+                    {dictionary.web?.upload?.files?.description_subtitle_22}
+                  </p>
+                                    <p className="text-sm text-muted-foreground mt-1">
+                    {dictionary.web?.upload?.files?.description_subtitle_23}
                   </p>
                 </div>
               </div>
@@ -199,13 +205,34 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
                 <Upload className="mt-1 h-6 w-6 text-primary flex-shrink-0" />
                 <div>
                   <p className="font-medium text-lg">
-                    {dictionary.web?.upload?.files?.description_title_1 || "Easy folder & multi-file upload"}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {dictionary.web?.upload?.files?.description_subtitle_1}
+                    {dictionary.web?.upload?.files?.description_title_2 || "Easy folder & multi-file upload"}
                   </p>
                 </div>
+</div>           <div className="flex items-start gap-4">
+
+                <Headphones className="mt-1 h-6 w-6 text-primary flex-shrink-0" />
+                <div>
+                
+
+                                    <p className="font-medium text-lg">
+                    {dictionary.web?.upload?.files?.description_title_3 || "Easy folder & multi-file upload"}
+                  </p>
+
+                </div>
               </div>
+              <div className="flex items-start gap-4">
+
+                <Clock className="mt-1 h-6 w-6 text-primary flex-shrink-0" />
+                <div>
+                
+
+                                    <p className="text-sm text-muted-foreground mt-1">
+                    {dictionary.web?.upload?.files?.description_title_4 || "Easy folder & multi-file upload"}
+                  </p>
+
+                </div>
+              </div>
+             
             </div>
           </div>
 
