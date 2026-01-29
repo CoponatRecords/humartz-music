@@ -71,6 +71,7 @@ pnpm turbo    # Run turbo commands directly (e.g. pnpm turbo run build)
 
 ## 📦 Project Structure
 
+```text
 humartz-music/
 ├── apps/                     # Main applications
 │   └── web/                  # Primary Next.js music web app
@@ -94,7 +95,7 @@ humartz-music/
 ├── CHANGELOG.md
 ├── LICENSE                   # MIT License
 └── README.md
-
+```
 
 ## 🌍 Deployment
 
