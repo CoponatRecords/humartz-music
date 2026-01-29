@@ -8,7 +8,6 @@ import { CheckCircle2, Loader2, Upload, FolderKanban } from "lucide-react";
 import Link from "next/link";
 import { useState, FormEvent } from "react";
 import { hashFolder } from "../hashFolder";
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 type FileManagerClientProps = {
   dictionary: Dictionary;
@@ -18,7 +17,6 @@ type FileManagerClientProps = {
 // 5GB Limit
 const MAX_TOTAL_SIZE = 5 * 1024 * 1024 * 1024;
 
-// Helper to format bytes
 const formatBytes = (bytes: number) => {
   if (bytes === 0) return "0 Bytes";
   const k = 1024;
@@ -27,9 +25,8 @@ const formatBytes = (bytes: number) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 };
 
-const FileManagerContent = ({ dictionary, locale }: FileManagerClientProps) => {
+export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps) => {
   const t = dictionary.web?.upload?.files ?? {};
-  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const [projectFiles, setProjectFiles] = useState<File[]>([]);
   const [masterFile, setMasterFile] = useState<File | null>(null);
@@ -42,10 +39,8 @@ const FileManagerContent = ({ dictionary, locale }: FileManagerClientProps) => {
   const [error, setError] = useState<string | null>(null);
   const [folderHash, setFolderHash] = useState<string | null>(null);
 
-  // Calculate total size safely
   const totalSize = [masterFile, ...projectFiles].reduce((acc, f) => acc + (f?.size || 0), 0);
 
-  // ── Helpers ──
   const sanitize = (str: string) =>
     str
       .trim()
@@ -54,33 +49,35 @@ const FileManagerContent = ({ dictionary, locale }: FileManagerClientProps) => {
       .replace(/[^a-z0-9._-]/g, "")
       .replace(/_+/g, "_");
 
-  async function uploadToR2(file: File, key: string, token: string) {
+  async function uploadToR2(file: File, key: string) {
     const presign = await fetch("/api/upload", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 
         fileName: key, 
         fileType: file.type,
-        fileSize: file.size,
-        captchaToken: token 
+        fileSize: file.size
+        // Removed captchaToken
       }),
     });
+    
     if (!presign.ok) {
       const errorData = await presign.json();
-      throw new Error(errorData.error || "Security verification failed");
+      throw new Error(errorData.error || "Upload initialization failed");
     }
+    
     const { signedUrl } = await presign.json();
     const res = await fetch(signedUrl, {
       method: "PUT",
       headers: { "Content-Type": file.type },
       body: file,
     });
+    
     if (!res.ok) throw new Error("Upload failed");
   }
 
   const handleProjectFilesChange = (files: FileList | null) => {
     if (!files) return;
-
     const fileArray = Array.from(files);
     const size = fileArray.reduce((acc, f) => acc + (f?.size || 0), 0);
 
@@ -89,18 +86,12 @@ const FileManagerContent = ({ dictionary, locale }: FileManagerClientProps) => {
       setProjectFiles([]);
       return;
     }
-
     setError(null);
     setProjectFiles(fileArray);
   };
 
   const handleUpload = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!executeRecaptcha) {
-      setError("Security system not ready. Please try again.");
-      return;
-    }
 
     if (!projectFiles.length || !masterFile) {
       setError("Please upload a project folder and a master file");
@@ -122,8 +113,6 @@ const FileManagerContent = ({ dictionary, locale }: FileManagerClientProps) => {
     setError(null);
 
     try {
-      const token = await executeRecaptcha("file_upload");
-
       const safeName = sanitize(name);
       const safeEmail = sanitize(email);
       const safeTrack = sanitize(trackName);
@@ -136,7 +125,7 @@ const FileManagerContent = ({ dictionary, locale }: FileManagerClientProps) => {
       let uploaded = 0;
 
       // Upload master file
-      await uploadToR2(masterFile, folderPrefix + "master_" + masterFile.name, token);
+      await uploadToR2(masterFile, folderPrefix + "master_" + masterFile.name);
       uploaded++;
       setUploadProgress(Math.round((uploaded / allFiles.length) * 100));
 
@@ -144,12 +133,11 @@ const FileManagerContent = ({ dictionary, locale }: FileManagerClientProps) => {
       for (const file of projectFiles) {
         const relativePath = file.webkitRelativePath || file.name;
         const key = folderPrefix + "project/" + relativePath;
-        await uploadToR2(file, key, token);
+        await uploadToR2(file, key);
         uploaded++;
         setUploadProgress(Math.round((uploaded / allFiles.length) * 100));
       }
 
-      // Send data to your database
       await fetch("/api/db/add-upload", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -188,7 +176,7 @@ const FileManagerContent = ({ dictionary, locale }: FileManagerClientProps) => {
                 {t.title || "File Manager"}
               </h4>
               <p className="max-w-sm text-left text-lg text-muted-foreground leading-relaxed tracking-tight">
-                {dictionary.web.upload.files.description}
+                {dictionary.web?.upload?.files?.description}
               </p>
             </div>
 
@@ -197,16 +185,10 @@ const FileManagerContent = ({ dictionary, locale }: FileManagerClientProps) => {
                 <FolderKanban className="mt-1 h-6 w-6 text-primary shrink-0" />
                 <div>
                   <p className="font-medium text-lg">
-                    {dictionary.web.upload.files.description_title_2 || "Organized & traceable uploads"}
+                    {dictionary.web?.upload?.files?.description_title_2 || "Organized & traceable uploads"}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {dictionary.web.upload.files.description_subtitle_21}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {dictionary.web.upload.files.description_subtitle_22}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {dictionary.web.upload.files.description_subtitle_23}
+                    {dictionary.web?.upload?.files?.description_subtitle_21}
                   </p>
                 </div>
               </div>
@@ -214,10 +196,10 @@ const FileManagerContent = ({ dictionary, locale }: FileManagerClientProps) => {
                 <Upload className="mt-1 h-6 w-6 text-primary flex-shrink-0" />
                 <div>
                   <p className="font-medium text-lg">
-                    {dictionary.web.upload.files.description_title_1 || "Easy folder & multi-file upload"}
+                    {dictionary.web?.upload?.files?.description_title_1 || "Easy folder & multi-file upload"}
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {dictionary.web.upload.files.description_subtitle_1}
+                    {dictionary.web?.upload?.files?.description_subtitle_1}
                   </p>
                 </div>
               </div>
@@ -265,7 +247,8 @@ const FileManagerContent = ({ dictionary, locale }: FileManagerClientProps) => {
                       <Label>Project folder (Max 5GB)</Label>
                       <Input
                         type="file"
-                        webkitdirectory="true"
+                        // @ts-ignore
+                        webkitdirectory=""
                         multiple
                         onChange={(e) => handleProjectFilesChange(e.target.files)}
                         disabled={isUploading}
@@ -303,16 +286,5 @@ const FileManagerContent = ({ dictionary, locale }: FileManagerClientProps) => {
         </div>
       </div>
     </div>
-  );
-};
-
-export const FileManagerClient = (props: FileManagerClientProps) => {
-  return (
-    <GoogleReCaptchaProvider
-      reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-      scriptProps={{ async: true, defer: true, appendTo: "head" }}
-    >
-      <FileManagerContent {...props} />
-    </GoogleReCaptchaProvider>
   );
 };
