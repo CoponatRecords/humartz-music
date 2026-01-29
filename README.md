@@ -93,7 +93,7 @@ humartz-music/
 ├── tsconfig.json
 ├── tsup.config.ts
 ├── CHANGELOG.md
-├── LICENSE                   # MIT License
+├── LICENSE                
 └── README.md
 ```
 
