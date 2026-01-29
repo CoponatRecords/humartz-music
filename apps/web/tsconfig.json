@@ -10,7 +10,9 @@
       "@backend/*": ["./backend/*"],
       "@generated/*": ["./generated/*"],
       "@prisma/*": ["./prisma/*"],
-            "@web/*": ["../web/*"]
+            "@web/*": ["../web/*"],
+                        "@api/*": ["../web/app/[locale]/api/*"],
+
 
     }
   },

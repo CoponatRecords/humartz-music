@@ -1,6 +1,6 @@
 // app/api/upload/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { getSignedUrlForUpload } from "../../upload/r2";
+import { getSignedUrlForUpload } from "@api/upload/r2";
 
 export async function POST(request: NextRequest) {
   try {

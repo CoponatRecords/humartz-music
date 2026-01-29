@@ -72,9 +72,18 @@ const WhitePaperPage = async ({ params }: PageProps) => {
             {/* 1. Abstract */}
             <section className="mb-16">
               <h2 className="text-2xl font-semibold tracking-tight mb-4">1. Abstract</h2>
-              <p className="text-muted-foreground leading-7">
-                Humartz is an open-source certification protocol for human-created content.
-              </p>
+        <p className="text-muted-foreground leading-7">
+  Humartz is an 
+  <a 
+    href="https://github.com/CoponatRecords/humartz-music" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="transition-colors hover:text-foreground underline decoration-muted-foreground/50 underline-offset-4"
+  >
+    {" "}open-source{" "}
+  </a> 
+  certification protocol for human-created content.
+</p>
               <p className="text-muted-foreground leading-7 mt-4">
                 As generative systems make content creation effectively infinite, the economic value of creative work shifts from production to provenance. The central question is no longer how content is made, but whether its human origin can be independently verified.
               </p>

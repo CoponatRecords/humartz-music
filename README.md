@@ -105,7 +105,7 @@ Push to GitHub
 Go to vercel.com/new
 Import your repository
 Vercel auto-detects Turborepo → no extra config needed
-Add environment variables if required
+Add environment variables
 Deploy 🎉
 
 ## 📄 License
