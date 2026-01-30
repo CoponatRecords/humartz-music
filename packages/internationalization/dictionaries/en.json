@@ -13,6 +13,8 @@
       },
       "whitepaper": "Whitepaper",
       "contact": "Contact",
+      "about": "About Us",
+
       "signIn": "Sign in",
       "signUp": "Start Verification"
     },
@@ -58,13 +60,13 @@
         "items": [
           {
             "title": "Tracks Certified",
-            "metric": "100000",
+            "metric": "00000",
             "delta": "100",
             "type": "unit"
           },
           {
             "title": "Artists Protected",
-            "metric": "120",
+            "metric": "0",
             "delta": "100",
             "type": "unit"
           }

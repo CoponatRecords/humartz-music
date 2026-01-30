@@ -1,119 +1,65 @@
-import { legal } from "@repo/cms";
-import { Feed } from "@repo/cms/components/feed";
-import { Status } from "@repo/observability/status";
-import Link from "next/link";
-import { env } from "@/env";
+import React from 'react';
 
-export const Footer = () => (<div></div>);
+const Footer = () => {
+  const currentYear = new Date().getFullYear();
 
+  return (
+    <footer className="w-full bg-background text-foreground border-t border-border pt-12 pb-8 transition-colors duration-300">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          
+          {/* Brand Section */}
+          <div className="col-span-1 md:col-span-1">
+            <h2 className="text-xl font-bold tracking-tight mb-4 text-foreground">
+              Humartz<span className="text-primary animate-pulse">.</span>
+            </h2>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              Where human creativity meets digital precision. Building the next generation of authenticity.
+            </p>
+          </div>
 
-//   <Feed queries={[legal.postsQuery]}>
-//     {async ([data]) => {
-//       "use server";
+          {/* Navigation */}
+          <div>
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Explore</h3>
+            <ul className="space-y-2">
+              <li><a href="/whitepaper" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">Whitepaper</a></li>
+              <li><a href="/pricing" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">Pricing</a></li>
+              <li><a href="/about" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">About</a></li>
+            </ul>
+          </div>
 
-//       const navigationItems = [
-//         {
-//           title: "Home",
-//           href: "/",
-//           description: "",
-//         },
-//         {
-//           title: "Pages",
-//           description: "Managing a small business today is already tough.",
-//           items: [
-//             {
-//               title: "Blog",
-//               href: "/blog",
-//             },
-//           ],
-//         },
-//         {
-//           title: "Legal",
-//           description: "We stay on top of the latest legal requirements.",
-//           items: data.legalPages.items.map((post) => ({
-//             title: post._title,
-//             href: `/legal/${post._slug}`,
-//           })),
-//         },
-//       ];
+          {/* Social */}
+          {/* <div>
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Connect</h3>
+            <ul className="space-y-2">
+              <li><a href="#" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">LinkedIn</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">Instagram</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">Twitter</a></li>
+            </ul>
+          </div> */}
 
-//       if (env.NEXT_PUBLIC_DOCS_URL) {
-//         navigationItems.at(1)?.items?.push({
-//           title: "Docs",
-//           href: env.NEXT_PUBLIC_DOCS_URL,
-//         });
-//       }
+          {/* Legal */}
+          <div>
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Legal</h3>
+            <ul className="space-y-2">
+              <li><a href="/privacy" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">Privacy Policy</a></li>
+              <li><a href="/terms" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
 
-//       return (
-//         <section className="dark border-foreground/10 border-t">
-//           <div className="w-full bg-background py-20 text-foreground lg:py-40">
-//             <div className="container mx-auto">
-//               <div className="grid items-center gap-10 lg:grid-cols-2">
-//                 <div className="flex flex-col items-start gap-8">
-//                   <div className="flex flex-col gap-2">
-//                     <h2 className="max-w-xl text-left font-regular text-3xl tracking-tighter md:text-5xl">
-// Humartz                    </h2>
-//                     <p className="max-w-lg text-left text-foreground/75 text-lg leading-relaxed tracking-tight">
-//                       Humanity First.
-//                     </p>
-//                   </div>
-//                   <Status />
-//                 </div>
-//                 <div className="grid items-start gap-10 lg:grid-cols-3">
-//                   {navigationItems.map((item) => (
-//                     <div
-//                       className="flex flex-col items-start gap-1 text-base"
-//                       key={item.title}
-//                     >
-//                       <div className="flex flex-col gap-2">
-//                         {item.href ? (
-//                           <Link
-//                             className="flex items-center justify-between"
-//                             href={item.href}
-//                             rel={
-//                               item.href.includes("http")
-//                                 ? "noopener noreferrer"
-//                                 : undefined
-//                             }
-//                             target={
-//                               item.href.includes("http") ? "_blank" : undefined
-//                             }
-//                           >
-//                             <span className="text-xl">{item.title}</span>
-//                           </Link>
-//                         ) : (
-//                           <p className="text-xl">{item.title}</p>
-//                         )}
-//                         {item.items?.map((subItem) => (
-//                           <Link
-//                             className="flex items-center justify-between"
-//                             href={subItem.href}
-//                             key={subItem.title}
-//                             rel={
-//                               subItem.href.includes("http")
-//                                 ? "noopener noreferrer"
-//                                 : undefined
-//                             }
-//                             target={
-//                               subItem.href.includes("http")
-//                                 ? "_blank"
-//                                 : undefined
-//                             }
-//                           >
-//                             <span className="text-foreground/75">
-//                               {subItem.title}
-//                             </span>
-//                           </Link>
-//                         ))}
-//                       </div>
-//                     </div>
-//                   ))}
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </section>
-//       );
-//     }}
-//   </Feed>
-// );
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-muted-foreground text-xs opacity-70">
+            © {currentYear} Humartz Studio. All rights reserved.
+          </p>
+          <p className="text-muted-foreground text-xs opacity-70">
+            Built with <span className="text-destructive">♥</span> for humans by Sébastien Coponat.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

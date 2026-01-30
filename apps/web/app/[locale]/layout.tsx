@@ -7,7 +7,7 @@ import { cn } from "@repo/design-system";
 // import { Toolbar } from "@repo/feature-flags/components/toolbar";
 import { getDictionary } from "@repo/internationalization";
 import type { ReactNode } from "react";
-import { Footer } from "./components/footer";
+import  Footer  from "./components/footer";
 import { Header } from "./components/header";
 
 type RootLayoutProperties = {
