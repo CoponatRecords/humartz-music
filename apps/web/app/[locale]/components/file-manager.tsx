@@ -237,7 +237,7 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
           </div>
 
           {/* Right column */}
-          <div className="flex items-start justify-center">
+          <div className="flex items-start justify-center p-6">
             <div className="w-full max-md flex flex-col gap-6 rounded-lg border p-8 bg-background shadow-sm">
               {isSuccess ? (
                 <div className="flex flex-col items-center justify-center text-center py-12 gap-6">
