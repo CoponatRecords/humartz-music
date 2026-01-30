@@ -86,7 +86,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
                       <NavigationMenuTrigger className="text-sm font-medium">
                         {item.title}
                       </NavigationMenuTrigger>
-                      <NavigationMenuContent className="!w-[450px] p-4">
+                      <NavigationMenuContent className="w-112.5! p-4">
                         <div className="grid grid-cols-2 gap-4">
                           <div className="flex flex-col justify-between">
                             <div>
@@ -148,7 +148,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px]  mt-6">
+              <SheetContent side="right" className="w-75  mt-6">
 
 
                 <nav className="flex flex-col gap-6 m-3">
