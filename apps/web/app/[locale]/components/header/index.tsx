@@ -23,12 +23,26 @@ import Link from "next/link";
 import { useState } from "react";
 import { LanguageSwitcher } from "./language-switcher";
 
+// --- Define proper types including hideOnMobile ---
+type SubNavItem = {
+  title: string;
+  href: string;
+  hideOnMobile?: boolean;
+};
+
+type NavItem = {
+  title: string;
+  href?: string;
+  description?: string;
+  items?: SubNavItem[];
+};
+
 type HeaderProps = {
   dictionary: Dictionary;
 };
 
 export const Header = ({ dictionary }: HeaderProps) => {
-  const navigationItems = [
+  const navigationItems: NavItem[] = [
     {
       title: dictionary.web.header.home,
       href: "/",
@@ -137,11 +151,10 @@ export const Header = ({ dictionary }: HeaderProps) => {
                 </SheetHeader>
 
                 <nav className="flex flex-col gap-6">
-                  
                   {/* --- MOVE PRIMARY CTA TO TOP --- */}
                   <Button asChild className="w-full h-12 text-md">
                     <Link href="/upload" onClick={() => setOpen(false)}>
-                      {dictionary.web.global.primaryCta} {/* "Get Certified" */}
+                      {dictionary.web.global.primaryCta}
                     </Link>
                   </Button>
 
@@ -159,19 +172,17 @@ export const Header = ({ dictionary }: HeaderProps) => {
                         </Link>
                       ) : (
                         <div className="flex flex-col gap-3">
-                          {item.items
-                            ?.filter(sub => !sub.hideOnMobile)
-                            .map((subItem) => (
-                              <Link
-                                className="flex items-center justify-between text-lg font-medium"
-                                href={subItem.href}
-                                key={subItem.title}
-                                onClick={() => setOpen(false)}
-                              >
-                                {subItem.title}
-                                <MoveRight className="h-4 w-4" />
-                              </Link>
-                            ))}
+                          {item.items?.map((subItem) => (
+                            <Link
+                              className="flex items-center justify-between text-lg font-medium"
+                              href={subItem.href}
+                              key={subItem.title}
+                              onClick={() => setOpen(false)}
+                            >
+                              {subItem.title}
+                              <MoveRight className="h-4 w-4" />
+                            </Link>
+                          ))}
                         </div>
                       )}
                     </div>
