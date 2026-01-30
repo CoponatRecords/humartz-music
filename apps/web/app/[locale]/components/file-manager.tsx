@@ -4,41 +4,62 @@ import { Button } from "@repo/design-system/components/ui/button";
 import { Input } from "@repo/design-system/components/ui/input";
 import { Label } from "@repo/design-system/components/ui/label";
 import type { Dictionary } from "@repo/internationalization";
-import { CheckCircle2, Loader2, Upload, FolderKanban, Headphones, Clock } from "lucide-react";
+import { 
+  CheckCircle2, 
+  Loader2, 
+  Upload, 
+  FolderKanban, 
+  Headphones, 
+  Clock, 
+  TicketPercent,
+  AlertCircle
+} from "lucide-react";
 import Link from "next/link";
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { hashFolder } from "../hashFolder";
+
+// The Humartz Fingerprint Logo Component
+const HumartzLogo = ({ className }: { className?: string }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title>Humartz Fingerprint</title>
+    <path
+      d="M12 2C7.5 2 4 5.5 4 10V16C4 16.55 4.45 17 5 17C5.55 17 6 16.55 6 16V10C6 6.5 8.5 4 12 4C15.5 4 18 6.5 18 10V18C18 18.55 18.45 19 19 19C19.55 19 20 18.55 20 18V10C20 5.5 16.5 2 12 2ZM12 6C9.5 6 7.5 8 7.5 10.5V17C7.5 17.55 7.95 18 8.5 18C9.05 18 9.5 17.55 9.5 17V10.5C9.5 9 10.5 8 12 8C13.5 8 14.5 9 14.5 10.5V16C14.5 16.55 14.95 17 15.5 17C16.05 17 16.5 16.55 16.5 16V10.5C16.5 8 14.5 6 12 6ZM12 10C11.5 10 11 10.5 11 11V16C11 16.55 11.45 17 12 17C12.55 17 13 16.55 13 16V11C13 10.5 12.5 10 12 10Z"
+      fill="currentColor"
+    />
+  </svg>
+);
 
 type FileManagerClientProps = {
   dictionary: Dictionary;
   locale: string;
 };
 
-const MAX_TOTAL_SIZE = 5 * 1024 * 1024 * 1024;
-
-const formatBytes = (bytes: number) => {
-  if (bytes === 0) return "0 Bytes";
-  const k = 1024;
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
-};
-
 export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps) => {
   const router = useRouter();
   const t = dictionary.web?.upload?.files ?? {};
 
+  // Form State
   const [projectFiles, setProjectFiles] = useState<File[]>([]);
   const [masterFile, setMasterFile] = useState<File | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [trackName, setTrackName] = useState("");
+  const [promoCode, setPromoCode] = useState("");
+  
+  // Upload State
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  const totalSize = [masterFile, ...projectFiles].reduce((acc, f) => acc + (f?.size || 0), 0);
+  // Promo Check (Case Insensitive)
+  const validCode = process.env.NEXT_PUBLIC_FREE_UPLOAD_CODE;
+  const isFree = promoCode.trim().length > 0 && 
+                 promoCode.trim().toUpperCase() === validCode?.toUpperCase();
 
   const sanitize = (str: string) =>
     str.trim().toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9.@_-]/g, "").replace(/_+/g, "_");
@@ -49,17 +70,9 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ fileName: key, fileType: file.type, fileSize: file.size }),
     });
-    
     if (!presign.ok) throw new Error("Upload initialization failed");
-    
     const { signedUrl } = await presign.json();
-    const res = await fetch(signedUrl, {
-      method: "PUT",
-      headers: { "Content-Type": file.type },
-      body: file,
-    });
-    
-    if (!res.ok) throw new Error("Upload failed");
+    await fetch(signedUrl, { method: "PUT", headers: { "Content-Type": file.type }, body: file });
   }
 
   const handleUpload = async (e: FormEvent<HTMLFormElement>) => {
@@ -67,6 +80,12 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
 
     if (!projectFiles.length || !masterFile) {
       setError("Please upload a project folder and a master file");
+      return;
+    }
+
+    // Error if they typed something, but it's not the right code
+    if (promoCode.trim().length > 0 && !isFree) {
+      setError("The promo code you entered is incorrect.");
       return;
     }
 
@@ -78,6 +97,7 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
       const hash = await hashFolder(allFiles);
       const folderPrefix = `Email_${sanitize(email)}_Name_${sanitize(name)}_TrackName_${sanitize(trackName)}_hash_${hash}/`;
 
+      // 1. Upload to R2
       let uploaded = 0;
       await uploadToR2(masterFile, folderPrefix + "master_" + masterFile.name);
       uploaded++;
@@ -89,14 +109,27 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
         setUploadProgress(Math.round((uploaded / allFiles.length) * 100));
       }
 
-      await fetch("/api/db/add-upload", {
+      // 2. Add to DB and check bypass status
+      const dbRes = await fetch("/api/upload", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ artistName: name, trackName: trackName, folderHash: hash, email }),
+        body: JSON.stringify({ 
+          artistName: name, 
+          trackName: trackName, 
+          folderHash: hash, 
+          email,
+          promoCode: promoCode.trim() 
+        }),
       });
 
-      // Navigate to your new payment page
-      router.push(`/${locale}/payment`);
+      const dbData = await dbRes.json();
+
+      // 3. Conditional Redirect (The Bypass Logic)
+      if (dbData.isFree) {
+        router.push(`/${locale}/upload`); // Skip Stripe
+      } else {
+        router.push(`/${locale}/payment`); // Go to Stripe
+      }
       
     } catch (err: any) {
       setError(err.message || "Upload failed");
@@ -111,64 +144,36 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
       <div className="container mx-auto max-w-6xl">
         <div className="grid gap-10 lg:grid-cols-2">
           
-          {/* Left column: Restored Icons & Info */}
+          {/* Left column: Branding & Info */}
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-4">
               <h4 className="max-w-xl text-left font-regular text-3xl tracking-tighter md:text-5xl">
                 {t.title || "File Manager"}
               </h4>
-              <p className="max-w-sm text-left text-lg text-muted-foreground leading-relaxed tracking-tight">
-                {dictionary.web?.upload?.files?.description}
+              <p className="max-w-sm text-left text-lg text-muted-foreground">
+                Professional audio delivery system.
               </p>
             </div>
 
             <div className="flex flex-col gap-6 mt-4">
               <div className="flex items-start gap-4">
+                <HumartzLogo className="mt-1 h-6 w-6 text-primary shrink-0" />
+                <div>
+                  <p className="font-medium text-lg">Secure & Traceable</p>
+                  <p className="text-sm text-muted-foreground">Encrypted uploads for high-fidelity masters.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
                 <FolderKanban className="mt-1 h-6 w-6 text-primary shrink-0" />
-                <div>
-                  <p className="font-medium text-lg">
-                    {dictionary.web?.upload?.files?.description_title_1 || "Organized & traceable uploads"}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">{dictionary.web?.upload?.files?.description_subtitle_21}</p>
-                  <p className="text-sm text-muted-foreground mt-1">{dictionary.web?.upload?.files?.description_subtitle_22}</p>
-                  <p className="text-sm text-muted-foreground mt-1">{dictionary.web?.upload?.files?.description_subtitle_23}</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-4">
-                <Upload className="mt-1 h-6 w-6 text-primary flex-shrink-0" />
-                <div>
-                  <p className="font-medium text-lg">
-                    {dictionary.web?.upload?.files?.description_title_2 || "Easy folder & multi-file upload"}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <Headphones className="mt-1 h-6 w-6 text-primary flex-shrink-0" />
-                <div>
-                  <p className="font-medium text-lg">
-                    {dictionary.web?.upload?.files?.description_title_3 || "High-fidelity processing"}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <Clock className="mt-1 h-6 w-6 text-primary flex-shrink-0" />
-                <div>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {dictionary.web?.upload?.files?.description_title_4 || "Fast turnaround times"}
-                  </p>
-                </div>
+                <p className="font-medium text-lg">Stems & Multi-file support</p>
               </div>
             </div>
           </div>
 
-          {/* Right column: The Form */}
+          {/* Right column: Form */}
           <div className="flex items-start justify-center p-6">
             <div className="w-full max-w-md flex flex-col gap-6 rounded-lg border p-8 bg-background shadow-sm">
               <form onSubmit={handleUpload} className="flex flex-col gap-6">
-                <p className="font-semibold text-xl">{t.uploadTitle || "Upload your files"}</p>
                 <div className="grid gap-4">
                   <div className="grid gap-2">
                     <Label>Your Name</Label>
@@ -179,57 +184,49 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
                     <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={isUploading} required />
                   </div>
                   <div className="grid gap-2">
-                    <Label>Track / Project Name</Label>
+                    <Label>Track Name</Label>
                     <Input value={trackName} onChange={(e) => setTrackName(e.target.value)} disabled={isUploading} required />
                   </div>
-
                   <div className="grid gap-2">
-                    <Label>Project Folder (Max 5GB)</Label>
-                    <Input
-                      type="file"
-                      // @ts-ignore
-                      webkitdirectory=""
-                      multiple
-                      onChange={(e) => e.target.files && setProjectFiles(Array.from(e.target.files))}
-                      disabled={isUploading}
-                    />
-                    {projectFiles.length > 0 && (
-                      <p className="text-sm text-muted-foreground">{projectFiles.length} files - {formatBytes(totalSize)}</p>
-                    )}
+                    <Label>Project Folder</Label>
+                    <Input type="file" /* @ts-ignore */ webkitdirectory="" multiple onChange={(e) => e.target.files && setProjectFiles(Array.from(e.target.files))} disabled={isUploading} />
                   </div>
-
                   <div className="grid gap-2">
                     <Label>Master Audio File</Label>
                     <Input type="file" accept="audio/*" onChange={(e) => setMasterFile(e.target.files ? e.target.files[0] : null)} disabled={isUploading} />
                   </div>
+
+                  {/* Promo Input Section */}
+                  <div className="grid gap-2 pt-4 border-t mt-2">
+                    <Label className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <TicketPercent className="h-4 w-4" /> Promo Code
+                    </Label>
+                    <Input 
+                      placeholder="Enter code" 
+                      value={promoCode} 
+                      onChange={(e) => { setPromoCode(e.target.value); setError(null); }}
+                      disabled={isUploading}
+                      className={isFree ? "border-green-500 ring-green-500" : ""}
+                    />
+                    {isFree && <p className="text-xs text-green-600 font-medium">✨ Promo applied: Upload is free!</p>}
+                  </div>
                 </div>
 
-                {error && <p className="text-sm text-destructive">{error}</p>}
+                {error && (
+                  <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                    <AlertCircle className="h-4 w-4" /> {error}
+                  </div>
+                )}
 
-                <Button type="submit" disabled={!allFieldsFilled || isUploading} className="w-full gap-2 mt-1">
+                <Button type="submit" disabled={!allFieldsFilled || isUploading} className="w-full">
                   {isUploading ? (
                     <>Uploading {uploadProgress}% <Loader2 className="h-4 w-4 animate-spin ml-2" /></>
+                  ) : isFree ? (
+                    <>Upload Free <CheckCircle2 className="h-4 w-4 ml-2" /></>
                   ) : (
                     <>Proceed to Payment <Upload className="h-4 w-4 ml-2" /></>
                   )}
                 </Button>
-
-<div className="flex flex-col items-center justify-center mt-4 gap-1">
-  <p className="text-muted-foreground text-sm text-center">
-    Prefer a manual review where your files are never uploaded, or have a   <Link 
-    href="/signup" 
-    className="text-primary text-sm text-center  hover:text-primary/80"
-  >
-   Producer Subscription
-  </Link> ?
-  </p>
-  <Link 
-    href="/contact" 
-    className="text-primary text-sm text-center underline hover:text-primary/80"
-  >
-    Contact us.
-  </Link>
-</div>
               </form>
             </div>
           </div>
