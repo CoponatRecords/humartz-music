@@ -1,11 +1,12 @@
 {
   "$schema": "https://turborepo.com/schema.json",
   "globalDependencies": ["**/.env.*local"],
+  "globalEnv": ["DATABASE_URL", "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY", "CLERK_SECRET_KEY"], 
   "ui": "tui",
   "envMode": "loose",
   "tasks": {
     "build": {
-      "dependsOn": ["^build", "test"],
+      "dependsOn": ["^build", "generate"], 
       "outputs": [
         ".next/**",
         "!.next/cache/**",
@@ -14,25 +15,18 @@
         ".react-email/**"
       ]
     },
+    "generate": { 
+      "cache": false
+    },
+    "migrate": {
+      "cache": false
+    },
     "test": {
       "dependsOn": ["^test"]
-    },
-    "analyze": {
-      "dependsOn": ["^analyze"]
     },
     "dev": {
       "cache": false,
       "persistent": true
-    },
-    "translate": {
-      "dependsOn": ["^translate"],
-      "cache": false
-    },
-    "clean": {
-      "cache": false
-    },
-    "//#clean": {
-      "cache": false
     }
   }
 }
