@@ -6,7 +6,7 @@ import { Input } from "@repo/design-system/components/ui/input";
 import { Label } from "@repo/design-system/components/ui/label";
 import type { Dictionary } from "@repo/internationalization";
 import { Wallet, Loader2, CheckCircle2, AlertCircle, MoveRight, ExternalLink } from "lucide-react";
-import { Interface } from "ethers/lib/utils";
+import { Interface } from "ethers";
 
 // Contract Constants
 const CONTRACT_ADDRESS = "0x9953BcE1F56b4bC1051321B394d2B6055c506619";
