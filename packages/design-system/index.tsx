@@ -35,6 +35,16 @@ export * from "./providers/theme";
 
 // ✅ Add these to export the components used in the Header
 export * from "./components/ui/button";
+export * from "./components/ui/label";
+export * from "./components/ui/calendar";
+export * from "./components/ui/popover";
+export * from "./components/ui/pagination";
+export * from "./components/ui/card";
+export * from "./components/ui/avatar";
+export * from "./components/ui/progress";
+export * from "./components/ui/tabs";
+export * from "./components/ui/checkbox";
+export * from "./components/ui/radio-group";
 export * from "./components/ui/accordion";
 export * from "./components/mode-toggle";
 export * from "./components/ui/navigation-menu";
@@ -49,7 +59,6 @@ export * from "./components/ui/dropdown-menu";
 export * from "./components/ui/input-group";
 export * from "./components/ui/dialog";
 export * from "./components/ui/carousel";
-
 export * from "./postcss.config.mjs";
 
 // ✅ Export your utils and fonts
