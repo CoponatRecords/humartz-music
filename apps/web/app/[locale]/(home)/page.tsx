@@ -7,7 +7,6 @@ import { FAQ } from "./components/faq";
 import { Features } from "./components/features";
 import { Hero } from "./components/hero";
 import { Stats } from "./components/stats";
-import { ChakraProvider } from "@chakra-ui/react";
 
 type HomeProps = {
   params: Promise<{
