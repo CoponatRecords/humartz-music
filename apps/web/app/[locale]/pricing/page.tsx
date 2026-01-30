@@ -108,7 +108,7 @@ const Pricing = () => {
                 <p className="text-2xl font-medium">Artist</p>
               </div>
               <p className="text-muted-foreground text-sm min-h-[60px]">
-                For independent artists who want to stand out. Prove your single is 100% human-made.
+                For independent artists who want to stand out. Prove your single is 100% human-made. Up to 5GB file uploads.
               </p>
               <p className="mt-4 flex flex-col gap-2 text-xl lg:flex-row lg:items-center">
                 <span className="text-4xl font-bold">$15</span>
@@ -133,7 +133,7 @@ const Pricing = () => {
                 </span>
               </div>
               <p className="text-muted-foreground text-sm min-h-[60px]">
-                For beatmakers and career musicians. Sell "Certified Human" beats at a premium.
+                For beatmakers and career musicians. Sell "Certified Human" beats at a premium. Up to 15GB file uploads.
               </p>
               <p className="mt-4 flex flex-col gap-2 text-xl lg:flex-row lg:items-center">
                 <span className="text-4xl font-bold">$49</span>

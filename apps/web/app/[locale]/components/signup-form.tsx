@@ -47,13 +47,21 @@ export const SignupFormClient = ({ dictionary, locale, plan }: any) => {
           <div className="flex flex-col gap-4">
             <h1 className="text-3xl tracking-tighter md:text-5xl font-regular">Elevate your Music</h1>
             <p className="max-w-sm text-lg text-muted-foreground leading-relaxed">
-              Join the elite circle of producers with the {plan.name} status.
+              Experience the full power of Humartz with the {plan.name} Membership.
             </p>
           </div>
           <div className="flex flex-col gap-6 mt-4">
             <div className="flex items-start gap-4">
-              <Star className="mt-1 h-6 w-6 text-primary shrink-0" />
-              <div>
+<svg
+  className="mt-1 h-6 w-6 text-primary shrink-0 fill-current"
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title>Humartz Fingerprint</title>
+  <path
+    d="M12 2C7.5 2 4 5.5 4 10V16C4 16.55 4.45 17 5 17C5.55 17 6 16.55 6 16V10C6 6.5 8.5 4 12 4C15.5 4 18 6.5 18 10V18C18 18.55 18.45 19 19 19C19.55 19 20 18.55 20 18V10C20 5.5 16.5 2 12 2ZM12 6C9.5 6 7.5 8 7.5 10.5V17C7.5 17.55 7.95 18 8.5 18C9.05 18 9.5 17.55 9.5 17V10.5C9.5 9 10.5 8 12 8C13.5 8 14.5 9 14.5 10.5V16C14.5 16.55 14.95 17 15.5 17C16.05 17 16.5 16.55 16.5 16V10.5C16.5 8 14.5 6 12 6ZM12 10C11.5 10 11 10.5 11 11V16C11 16.55 11.45 17 12 17C12.55 17 13 16.55 13 16V11C13 10.5 12.5 10 12 10Z"
+  />
+</svg>              <div>
                 <p className="font-medium text-lg">Certified Human Label</p>
                 <p className="text-sm text-muted-foreground mt-1">Verified badge to stand out from AI noise.</p>
               </div>
@@ -62,7 +70,7 @@ export const SignupFormClient = ({ dictionary, locale, plan }: any) => {
               <ShieldCheck className="mt-1 h-6 w-6 text-primary shrink-0" />
               <div>
                 <p className="font-medium text-lg">Secure Licensing</p>
-                <p className="text-sm text-muted-foreground mt-1">Legally binding contracts generated automatically.</p>
+                <p className="text-sm text-muted-foreground mt-1">With 100% human-made certified music.</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
