@@ -1,22 +1,21 @@
 "use client";
 
-import { ModeToggle } from "@repo/design-system/components/mode-toggle";
-import { Button } from "@repo/design-system/components/ui/button";
-import {
+import { 
+  ModeToggle, 
+  Button,
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@repo/design-system/components/ui/navigation-menu";
-import { 
   Sheet, 
   SheetContent, 
   SheetHeader, 
   SheetTitle, 
   SheetTrigger 
-} from "@repo/design-system/components/ui/sheet";
+} from "@repo/design-system"; // ✅ Consolidated into one clean import
+
 import type { Dictionary } from "@repo/internationalization";
 import { Menu, MoveRight } from "lucide-react";
 import Link from "next/link";

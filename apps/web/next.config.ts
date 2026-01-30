@@ -5,7 +5,11 @@ import { withLogging, withSentry } from "@repo/observability/next-config";
 import type { NextConfig } from "next";
 import { env } from "@/env";
 
-let nextConfig: NextConfig = withToolbar(withLogging(config));
+// ADD THIS LINE: Explicitly transpile the database package
+let nextConfig: NextConfig = {
+  ...withToolbar(withLogging(config)),
+  transpilePackages: ["@repo/database"], // This handles the ./enums.js resolution
+};
 
 nextConfig.images?.remotePatterns?.push({
   protocol: "https",

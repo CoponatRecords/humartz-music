@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma as database } from "@repo/database/prisma/prisma";
+import { prisma as database } from "@repo/database";
 
 export type SearchResults = {
   tracks: { 
@@ -81,7 +81,7 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
       slug: t.slug,
       merkleLeaf: t.merkleLeaf,
       artistName: t.artists[0]?.artist.name ?? "Unknown Artist",
-      verificationStatus: t.isVerified ? "VERIFIED" : "UNVERIFIED", 
+      verificationStatus: t.isVerified ? "yes" : "no", 
     }));
 
     const formattedArtists = artists.map((a: any) => ({

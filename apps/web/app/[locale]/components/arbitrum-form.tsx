@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState } from "react";
-import { Button } from "@repo/design-system/components/ui/button";
-import { Input } from "@repo/design-system/components/ui/input";
-import { Label } from "@repo/design-system/components/ui/label";
+import { Button, Input, Label } from "@repo/design-system";
+
 import type { Dictionary } from "@repo/internationalization";
 import { Wallet, Loader2, CheckCircle2, AlertCircle, MoveRight, ExternalLink } from "lucide-react";
 import { BrowserProvider, Contract, Interface } from "ethers";

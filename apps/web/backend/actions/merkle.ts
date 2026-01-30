@@ -1,5 +1,5 @@
 // apps/web/backend/utils/merkle.ts
-import { prisma } from "@repo/database/prisma/prisma";
+import { prisma } from "@repo/database";
 import { MerkleTree } from 'merkletreejs';
 import keccak256 from 'keccak256';
 

@@ -1,21 +1,15 @@
-/* Based on https://github.com/tsconfig/bases/blob/501da2bcd640cf95c95805783e1012b992338f28/bases/node22.json */
 {
   "extends": [
     "@repo/typescript-config/nextjs.json",
     "@repo/cms/typescript-config.json"
   ],
   "compilerOptions": {
-    
-"paths": {
+    "moduleResolution": "Bundler",
+    "paths": {
       "@/*": ["./*"],
-      "@repo/*": ["../../packages/*"],
       "@backend/*": ["./backend/*"],
-      "@generated/*": ["./generated/*"],
-      "@prisma/*": ["./prisma/*"],
-      "@web/*": ["../web/*"],
-      "@api/*": ["../web/app/[locale]/api/*"],
-
-
+      "@web/*": ["./*"],
+      "@api/*": ["./app/[locale]/api/*"]
     }
   },
   "include": [
@@ -25,8 +19,5 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-    "scripts": {
-    "postinstall": "npm prisma generate"
-  }
-
+  "exclude": ["node_modules"]
 }

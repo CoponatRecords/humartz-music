@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@repo/database/prisma/prisma";
+import { prisma } from "@repo/database";
 import { MerkleTree } from 'merkletreejs';
 import keccak256 from 'keccak256';
 
@@ -17,7 +17,7 @@ export async function getMerkleProof(trackId: number) {
   // 2. Re-build the Tree to generate the proof path
   // (We fetch only the leaves to keep it fast)
   const allVerified = await prisma.track.findMany({
-    where: { isVerified: 'yes', merkleLeaf: { not: null } },
+    where: { isVerified: { in: ['yes', 1] }, merkleLeaf: { not: null } },
     select: { merkleLeaf: true },
     orderBy: { id: 'asc' } // CRITICAL: Order must match generate-root.ts
   });

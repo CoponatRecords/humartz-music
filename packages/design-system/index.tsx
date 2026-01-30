@@ -1,4 +1,4 @@
-import { AuthProvider } from "@repo/auth/provider";
+// import { AuthProvider } from "@repo/auth/provider";
 import type { ThemeProviderProps } from "next-themes";
 import { Toaster } from "./components/ui/sonner";
 import { TooltipProvider } from "./components/ui/tooltip";
@@ -18,9 +18,41 @@ export const DesignSystemProvider = ({
   ...properties
 }: DesignSystemProviderProperties) => (
   <ThemeProvider {...properties}>
-    <AuthProvider helpUrl={helpUrl} privacyUrl={privacyUrl} termsUrl={termsUrl}>
+    {/* <AuthProvider helpUrl={helpUrl} privacyUrl={privacyUrl} termsUrl={termsUrl}> */}
       <TooltipProvider>{children}</TooltipProvider>
       <Toaster />
-    </AuthProvider>
+    {/* </AuthProvider> */}
   </ThemeProvider>
 );
+
+export * from "./lib/utils";
+export * from "./lib/fonts";
+
+// packages/design-system/index.tsx
+
+// Export your provider (already there)
+export * from "./providers/theme"; 
+
+// ✅ Add these to export the components used in the Header
+export * from "./components/ui/button";
+export * from "./components/ui/accordion";
+export * from "./components/mode-toggle";
+export * from "./components/ui/navigation-menu";
+export * from "./components/ui/sheet";
+export * from "./components/ui/sonner";
+export * from "./components/ui/tooltip";
+export * from "./components/ui/toggle";
+export * from "./components/ui/input";
+export * from "./components/ui/separator";
+export * from "./components/ui/textarea";
+export * from "./components/ui/dropdown-menu";
+export * from "./components/ui/input-group";
+export * from "./components/ui/dialog";
+export * from "./components/ui/carousel";
+
+export * from "./postcss.config.mjs";
+
+// ✅ Export your utils and fonts
+export * from "./lib/utils";
+export * from "./lib/fonts";
+

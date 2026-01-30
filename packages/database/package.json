@@ -1,0 +1,28 @@
+{
+  "name": "@repo/database",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/prisma.ts",
+  "types": "./src/prisma.ts",
+  "exports": {
+    ".": "./src/prisma.ts",
+    "./client": "./generated/prisma/client.ts"
+  },
+  "scripts": {
+    "studio": "prisma studio",
+    "generate": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "7.3.0",
+    "@prisma/client": "7.3.0",
+    "@prisma/config": "7.3.0",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/pg": "^8.11.10",
+    "prisma": "7.3.0",
+    "typescript": "^5.7.2"
+  }
+}
