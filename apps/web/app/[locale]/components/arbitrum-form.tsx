@@ -125,8 +125,8 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
       <div className="container mx-auto max-w-6xl grid gap-10 lg:grid-cols-2">
 
         {/* LEFT SIDE: Contract Info & Results */}
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6  p-6">
+          <div className="flex flex-col gap-4 ">
             <h4 className="text-3xl md:text-5xl font-regular tracking-tighter">On-Chain Interaction</h4>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-sm">
               Securely write and read data on the Arbitrum L2 blockchain. Ensure your wallet is connected to the correct RPC.
