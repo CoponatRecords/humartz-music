@@ -6,7 +6,7 @@ import { Input } from "@repo/design-system/components/ui/input";
 import { Label } from "@repo/design-system/components/ui/label";
 import type { Dictionary } from "@repo/internationalization";
 import { Wallet, Loader2, CheckCircle2, AlertCircle, MoveRight, ExternalLink } from "lucide-react";
-import { Interface } from "ethers";
+import { BrowserProvider, Contract, Interface } from "ethers";
 
 // Contract Constants
 const CONTRACT_ADDRESS = "0x9953BcE1F56b4bC1051321B394d2B6055c506619";
@@ -40,17 +40,24 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
     setTxHash(null);
 
     if (!window.ethereum) {
-      setErrorMessage("No wallet found. Please install Metamask.");
+      setErrorMessage("No wallet found. Please install MetaMask.");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!window.ethereum.isMetaMask) {
+      setErrorMessage("Please use MetaMask (desktop or mobile) to continue.");
       setIsLoading(false);
       return;
     }
 
     try {
-      const { BrowserProvider, Contract } = await import("ethers");
-      const provider = new BrowserProvider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
+      // Request accounts (mobile-friendly)
+      await window.ethereum.request({ method: "eth_requestAccounts" });
 
+      const provider = new BrowserProvider(window.ethereum);
       const network = await provider.getNetwork();
+
       if (network.chainId !== 42161n) {
         setErrorMessage("Please switch your wallet to the Arbitrum network.");
         setIsLoading(false);
@@ -62,12 +69,14 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
 
       const tx = await contract.setGreeting(greeting);
       setTxHash(tx.hash);
+
+      // Optional: await tx.wait() but don't block UI on mobile too long
       await tx.wait();
 
       setIsSuccess(true);
     } catch (err: any) {
       console.error(err);
-      setErrorMessage(err?.reason || "Transaction failed. Please try again.");
+      setErrorMessage(err?.reason || err?.message || "Transaction failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -82,16 +91,13 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
     setIsReading(true);
 
     if (!window.ethereum) {
-      setReadError("No wallet found. Please install Metamask.");
+      setReadError("No wallet found. Please install MetaMask.");
       setIsReading(false);
       return;
     }
 
     try {
-      const { BrowserProvider } = await import("ethers");
       const provider = new BrowserProvider(window.ethereum);
-
-      // Fetch transaction
       const tx = await provider.getTransaction(readHash);
       if (!tx) throw new Error("Transaction not found");
 
@@ -101,7 +107,6 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
         const parsed = iface.decodeFunctionData("setGreeting", tx.data);
         decoded = parsed._greeting;
       } catch {
-        // fallback: show raw input if not decodable
         decoded = tx.data;
       }
 
@@ -152,12 +157,11 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
 
           {readResult && readTxLink && (
             <div className="mt-6 p-4 rounded-md bg-green-50 text-green-700">
-                              <a href={readTxLink} target="_blank" rel="noopener noreferrer"
+              <a href={readTxLink} target="_blank" rel="noopener noreferrer"
                  className="font-medium hover:underline mt-2 block">
                 Transaction Data
               </a>
               <p className="break-words">{readResult}</p>
-
             </div>
           )}
         </div>
