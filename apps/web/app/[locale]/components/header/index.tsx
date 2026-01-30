@@ -129,7 +129,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
 
         {/* --- RIGHT ACTIONS / MOBILE TRIGGER --- */}
         <div className="flex items-center justify-end gap-4">
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4" >
             <Button asChild variant="ghost">
               <Link href="/contact">{dictionary.web.header.contact}</Link>
             </Button>
@@ -145,12 +145,10 @@ export const Header = ({ dictionary }: HeaderProps) => {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px]">
-                <SheetHeader className="text-left mb-6">
-                  <SheetTitle>Menu</SheetTitle>
-                </SheetHeader>
+              <SheetContent side="right" className="w-[300px]  mt-6">
 
-                <nav className="flex flex-col gap-6">
+
+                <nav className="flex flex-col gap-6 m-3">
                   {/* --- MOVE PRIMARY CTA TO TOP --- */}
                   <Button asChild className="w-full h-12 text-md">
                     <Link href="/upload" onClick={() => setOpen(false)}>
