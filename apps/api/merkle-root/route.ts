@@ -1,7 +1,7 @@
-import  {prisma}  from '@repo/database';
-
 export async function GET() {
   try {
+
+    const { prisma } = await import("@repo/database");
     const rootRecord = await prisma.merkleRoot.findUnique({ where: { id: 1 } });
 
     if (!rootRecord) {
