@@ -44,11 +44,11 @@
           
           {
             "title": "IP Protection",
-            "description": "We never publish your raw files. Only the cryptographic hash is public, keeping your stems private and secure."
+            "description": "We never publish your raw files. Only the cryptographic hash is public, keeping your files private and secure."
           },
           {
             "title": "Public Verification URL",
-            "description": "Receive a unique 'humartz.com/cert' link for every track. Share it with sync-clients, publishers, or on your website."
+            "description": "Receive a unique 'humartz.com/certify/hash' link for every track. Share it with sync-clients, publishers, or on your website."
           }
         ]
       },
