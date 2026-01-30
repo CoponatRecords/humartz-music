@@ -4,12 +4,12 @@
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js&logoColor=white&style=flat-square)](#)
 [![Turborepo](https://img.shields.io/badge/Turborepo-Enabled-red?logo=turborepo&logoColor=white&style=flat-square)](#)
 [![pnpm](https://img.shields.io/badge/pnpm-Workspace-orange?logo=pnpm&logoColor=white&style=flat-square)](#)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](#license)
+
 
 **Humartz Music** is a modern, scalable music platform built with **Next.js** in a **Turborepo** monorepo structure.  
 It is designed to deliver high-performance, interactive music experiences — from streaming and artist showcases to immersive web-based audio features — with a clean architecture ready for production.
 
-🌐 **Live Demo**: [https://humartz-music-web.vercel.app](https://humartz-music-web.vercel.app)
+🌐 **Live Demo**: [https://humartz.com](https://humartz.com)
 
 ## ✨ Features
 
@@ -108,19 +108,3 @@ Vercel auto-detects Turborepo → no extra config needed
 Add environment variables
 Deploy 🎉
 
-## 📄 License
-
-This project is licensed under the **Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International (CC BY-NC-ND 4.0)** license.
-
-**Under this license, you are free to:**
-- **Share:** Copy and redistribute the material in any medium or format.
-
-**Under the following terms:**
-- **Attribution:** You must give appropriate credit to Coponat Records.
-- **Non-Commercial:** You may not use the material for commercial purposes.
-- **No-Derivatives:** If you remix, transform, or build upon the material, you may not distribute the modified material.
-
-[Click here to read the full license text.](https://creativecommons.org/licenses/by-nc-nd/4.0/)
-
-
-Fais moi une image docker pour mon next
