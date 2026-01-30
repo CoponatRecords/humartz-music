@@ -1,12 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@repo/design-system/components/ui/button";
-import { Input } from "@repo/design-system/components/ui/input";
-import { Label } from "@repo/design-system/components/ui/label";
+import { Button, Input, Label } from "@repo/design-system";
 import { UserPlus, Star, ShieldCheck, Zap, Loader2 } from "lucide-react";
-import Link from "next/link";
-import type { Dictionary } from "@repo/internationalization";
+
 
 export const SignupFormClient = ({ dictionary, locale, plan }: any) => {
   const [isLoading, setIsLoading] = useState(false);

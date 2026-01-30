@@ -1,4 +1,4 @@
-import { Button } from "@repo/design-system/components/ui/button";
+import { Button } from "@repo/design-system";
 import { Check, Minus, MoveRight, PhoneCall, ShieldCheck, Music, Copyright } from "lucide-react";
 import Link from "next/link";
 import { env } from "@/env";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@repo/design-system/components/ui/button";
+import { Button } from "@repo/design-system";
 import { CheckCircle2, Mail, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion"; // Optional: for a smooth entrance

@@ -21,21 +21,12 @@ export type SearchResults = {
 
 export async function searchGlobal(query: string): Promise<SearchResults> {
   const cleanQuery = query.trim();
-  
-  // LOG 1: Check what the server actually receives
-  console.log(`🔍 Search started for: "${cleanQuery}"`);
 
   if (!cleanQuery || cleanQuery.length < 2) {
-    console.log("⚠️ Search aborted: Query too short.");
     return { tracks: [], artists: [] };
   }
 
   try {
-    // LOG 2: Validate DB URL is present (helps find Vercel config issues)
-    if (!process.env.DATABASE_URL) {
-      console.error("❌ ERROR: DATABASE_URL is undefined in the environment!");
-    }
-
     const [tracks, artists] = await Promise.all([
       database.track.findMany({
         where: {
@@ -56,7 +47,7 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
           id: true,
           title: true,
           slug: true,
-          isVerified: true,
+          isVerified: true, // DB String: "TRUE", "FALSE", "PENDING", etc.
           merkleLeaf: true, 
           artists: {
             take: 1,
@@ -72,32 +63,36 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
       }),
     ]);
 
-    // LOG 3: Check raw counts before formatting
-    console.log(`✅ DB Response: Found ${tracks.length} tracks and ${artists.length} artists.`);
+    const formattedTracks = tracks.map((t: any) => {
+      // Normalize the string for comparison
+      const rawValue = (t.isVerified || "").trim().toLowerCase();
+      
+      let status: string | null = null; 
 
-    const formattedTracks = tracks.map((t: any) => ({
-      id: t.id,
-      title: t.title,
-      slug: t.slug,
-      merkleLeaf: t.merkleLeaf,
-      artistName: t.artists[0]?.artist.name ?? "Unknown Artist",
-      verificationStatus: t.isVerified ? "yes" : "no", 
-    }));
+      if (rawValue === "true" || rawValue === "yes" || rawValue === "verified") {
+        status = "yes"; // Green
+      } else if (rawValue === "false" || rawValue === "no" || rawValue === "ai") {
+        status = "no";  // Red
+      } else {
+        status = null;  // Orange (Pending)
+      }
 
-    const formattedArtists = artists.map((a: any) => ({
-      ...a,
-      verificationStatus: null, 
-    }));
+      return {
+        id: t.id,
+        title: t.title,
+        slug: t.slug,
+        merkleLeaf: t.merkleLeaf,
+        artistName: t.artists[0]?.artist.name ?? "Unknown Artist",
+        verificationStatus: status, 
+      };
+    });
 
-    return { tracks: formattedTracks, artists: formattedArtists };
+    return { 
+      tracks: formattedTracks, 
+      artists: artists.map((a: any) => ({ ...a, verificationStatus: null })) 
+    };
   } catch (error) {
-    // LOG 4: Full error details (Crucial for db.prisma.io issues)
-    console.error("❌ Search Execution Failed!");
-    if (error instanceof Error) {
-      console.error("Error Name:", error.name);
-      console.error("Error Message:", error.message);
-      // This will show if it's a P1001 (Connection) or P2021 (Table missing)
-    }
+    console.error("❌ Search Execution Failed!", error);
     return { tracks: [], artists: [] };
   }
 }
