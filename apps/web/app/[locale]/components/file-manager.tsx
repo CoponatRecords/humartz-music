@@ -1,16 +1,18 @@
 "use client";
 
-import { Button,Input , Label } from "@repo/design-system";
+import { Button, Input, Label } from "@repo/design-system";
 import type { Dictionary } from "@repo/internationalization";
 import { 
   CheckCircle2, 
   Loader2, 
   Upload, 
-  FolderKanban, 
-  Headphones, 
+  ShieldCheck, 
+  Fingerprint, 
   Clock, 
   TicketPercent,
-  AlertCircle
+  AlertCircle,
+  FileAudio,
+  FolderOpen
 } from "lucide-react";
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
@@ -30,7 +32,11 @@ type FileManagerClientProps = {
 
 export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps) => {
   const router = useRouter();
+  
+  // Scoping translations based on your JSON structure
   const t = dictionary.web?.upload?.files ?? {};
+  const globalT = dictionary.web?.global ?? {};
+  const contactFormT = dictionary.web?.contact?.hero?.form ?? {};
 
   const [projectFiles, setProjectFiles] = useState<File[]>([]);
   const [masterFile, setMasterFile] = useState<File | null>(null);
@@ -56,7 +62,7 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ fileName: key, fileType: file.type }),
     });
-    if (!presign.ok) throw new Error("Upload initialization failed");
+    if (!presign.ok) throw new Error(t.errorUpload || "Upload failed");
     const { signedUrl } = await presign.json();
     await fetch(signedUrl, { method: "PUT", headers: { "Content-Type": file.type }, body: file });
   }
@@ -65,12 +71,7 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
     e.preventDefault();
 
     if (!projectFiles.length || !masterFile) {
-      setError("Please upload a project folder and a master file");
-      return;
-    }
-
-    if (promoCode.trim().length > 0 && !isFree) {
-      setError("The promo code you entered is incorrect.");
+      setError(t.noFiles || "Please select all required files");
       return;
     }
 
@@ -99,9 +100,9 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
         body: JSON.stringify({ 
           endpoint: "verify-promo", 
           promoCode: promoCode.trim(),
-          email: email,       // For automatic email
-          artistName: name,   // For automatic email
-          trackName: trackName // For automatic email
+          email: email,
+          artistName: name,
+          trackName: trackName
         }),
       });
 
@@ -116,7 +117,7 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
       
     } catch (err: any) {
       console.error("Upload process error:", err);
-      setError(err.message || "Upload failed");
+      setError(err.message || t.errorUpload);
       setIsUploading(false);
     }
   };
@@ -125,103 +126,137 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
 
   return (
     <div className="w-full py-20 lg:py-40">
-      <div className="container mx-auto max-w-6xl">
-        <div className="grid gap-10 lg:grid-cols-2">
+      <div className="container mx-auto max-w-6xl px-4">
+        <div className="grid gap-16 lg:grid-cols-2">
           
-          {/* Left Column (Branding & Features Restored) */}
+          {/* Left Column - Benefits & Instructions from Dictionary */}
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-4">
-              <h4 className="max-w-xl text-left font-regular text-3xl tracking-tighter md:text-5xl">
-                {t.title || "File Manager"}
-              </h4>
-              <p className="max-w-sm text-left text-lg text-muted-foreground">
-                Professional audio delivery system for studio-grade projects.
+              <h1 className="max-w-xl text-left font-bold text-4xl tracking-tighter md:text-6xl">
+                {t.title}
+              </h1>
+              <p className="max-w-md text-left text-lg text-muted-foreground">
+                {t.description}
               </p>
             </div>
 
-            <div className="flex flex-col gap-6 mt-4">
-              <div className="flex items-start gap-4">
-                <HumartzLogo className="mt-1 h-6 w-6 text-primary shrink-0" />
-                <div>
-                  <p className="font-medium text-lg">Secure & Traceable</p>
-                  <p className="text-sm text-muted-foreground">Encrypted cloud storage for your high-fidelity masters.</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-4">
-                <FolderKanban className="mt-1 h-6 w-6 text-primary shrink-0" />
-                <div>
-                  <p className="font-medium text-lg">Folder Structure</p>
-                  <p className="text-sm text-muted-foreground">Full multi-file support with folder hierarchy preservation.</p>
-                </div>
+            <div className="space-y-8">
+              {/* Step 1: Preparation */}
+              <div className="space-y-4">
+                <h3 className="font-bold text-xl flex items-center gap-2">
+                  {t.description_title_1}
+                </h3>
+                <ul className="grid gap-3 text-sm text-muted-foreground ml-9">
+                  <li className="flex items-start gap-2 italic">{t.description_subtitle_21}</li>
+                  <li className="flex items-start gap-2">{t.description_subtitle_22}</li>
+                  <li className="flex items-start gap-2">{t.description_subtitle_23}</li>
+                </ul>
               </div>
 
-              <div className="flex items-start gap-4">
-                <Clock className="mt-1 h-6 w-6 text-primary shrink-0" />
-                <div>
-                  <p className="font-medium text-lg">Fast Processing</p>
-                  <p className="text-sm text-muted-foreground">Engineers typically begin review within 24 hours of upload.</p>
-                </div>
+              {/* Dynamic Benefits Mapping */}
+              <div className="grid gap-6 border-t pt-8">
+                {t.benefitsUpload?.map((benefit: any, index: number) => (
+                  <div key={index} className="flex items-start gap-4">
+                    {index === 0 && <HumartzLogo className="h-6 w-6 text-primary shrink-0" />}
+                    {index === 1 && <ShieldCheck className="h-6 w-6 text-primary shrink-0" />}
+                    {index === 2 && <Fingerprint className="h-6 w-6 text-primary shrink-0" />}
+                    <div>
+                      <p className="font-semibold text-lg">{benefit.title}</p>
+                      <p className="text-sm text-muted-foreground">{benefit.description}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Right Column (Form) */}
-          <div className="flex items-start justify-center p-6">
-            <div className="w-full max-w-md flex flex-col gap-6 rounded-lg border p-8 bg-background shadow-sm">
-              <form onSubmit={handleUpload} className="flex flex-col gap-6">
+          {/* Right Column - Submission Form */}
+          <div className="flex items-start justify-center">
+            <div className="w-full max-w-md flex flex-col gap-6 rounded-2xl border bg-card p-8 shadow-sm">
+              <div className="flex flex-col gap-1 mb-2">
+                <h2 className="text-2xl font-bold">{t.uploadTitle}</h2>
+                <p className="text-sm text-muted-foreground">{t.description_subtitle_1}</p>
+              </div>
+
+              <form onSubmit={handleUpload} className="flex flex-col gap-5">
                 <div className="grid gap-4">
                   <div className="grid gap-2">
-                    <Label>Your Name</Label>
+                    <Label>{contactFormT.firstName || "Name"}</Label>
                     <Input value={name} onChange={(e) => setName(e.target.value)} disabled={isUploading} required />
                   </div>
+                  
                   <div className="grid gap-2">
                     <Label>Email</Label>
                     <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={isUploading} required />
                   </div>
+
                   <div className="grid gap-2">
-                    <Label>Track Name</Label>
+                    <Label>{t.trackName || "Track Title"}</Label>
                     <Input value={trackName} onChange={(e) => setTrackName(e.target.value)} disabled={isUploading} required />
                   </div>
-                  <div className="grid gap-2">
-                    <Label>Project Folder</Label>
-                    <Input type="file" /* @ts-ignore */ webkitdirectory="" multiple onChange={(e) => e.target.files && setProjectFiles(Array.from(e.target.files))} disabled={isUploading} />
+
+                  <div className="grid gap-2 pt-2">
+                    <Label className="flex items-center gap-2">
+                      <FolderOpen className="h-4 w-4 text-primary" /> {t.description_title_2}
+                    </Label>
+                    <Input 
+                      type="file" 
+                      /* @ts-ignore */ 
+                      webkitdirectory="" 
+                      multiple 
+                      onChange={(e) => e.target.files && setProjectFiles(Array.from(e.target.files))} 
+                      disabled={isUploading} 
+                      className="bg-muted/20"
+                    />
+                    <p className="text-[10px] text-muted-foreground">{t.chooseFile}</p>
                   </div>
+
                   <div className="grid gap-2">
-                    <Label>Master Audio File</Label>
-                    <Input type="file" accept="audio/*" onChange={(e) => setMasterFile(e.target.files ? e.target.files[0] : null)} disabled={isUploading} />
+                    <Label className="flex items-center gap-2">
+                      <FileAudio className="h-4 w-4 text-primary" /> {t.description_title_3}
+                    </Label>
+                    <Input 
+                      type="file" 
+                      accept="audio/*" 
+                      onChange={(e) => setMasterFile(e.target.files ? e.target.files[0] : null)} 
+                      disabled={isUploading} 
+                      className="bg-muted/20"
+                    />
                   </div>
 
                   <div className="grid gap-2 pt-4 border-t mt-2">
-                    <Label className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <TicketPercent className="h-4 w-4" /> Promo Code
+                    <Label className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase">
+                      <TicketPercent className="h-3.5 w-3.5" /> Promo Code
                     </Label>
                     <Input 
                       placeholder="Enter code" 
                       value={promoCode} 
                       onChange={(e) => { setPromoCode(e.target.value); setError(null); }}
                       disabled={isUploading}
-                      className={isFree ? "border-green-500 ring-green-500" : ""}
+                      className={isFree ? "border-green-500 ring-0 bg-green-500/5" : ""}
                     />
-                    {isFree && <p className="text-xs text-green-600 font-medium animate-pulse">✨ Promo applied: Upload is free!</p>}
                   </div>
                 </div>
 
                 {error && (
-                  <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
-                    <AlertCircle className="h-4 w-4" /> {error}
+                  <div className="flex items-center gap-2 text-sm font-medium text-destructive bg-destructive/10 p-3 rounded-lg border border-destructive/20">
+                    <AlertCircle className="h-4 w-4 shrink-0" /> {error}
                   </div>
                 )}
 
-                <Button type="submit" disabled={!allFieldsFilled || isUploading} className="w-full">
+                <Button type="submit" size="lg" disabled={!allFieldsFilled || isUploading} className="w-full">
                   {isUploading ? (
-                    <>Uploading {uploadProgress}% <Loader2 className="h-4 w-4 animate-spin ml-2" /></>
+                    <>{t.uploading} {uploadProgress}% <Loader2 className="h-4 w-4 animate-spin ml-2" /></>
                   ) : isFree ? (
-                    <>Upload Free <CheckCircle2 className="h-4 w-4 ml-2" /></>
+                    <>Submit Free <CheckCircle2 className="h-4 w-4 ml-2" /></>
                   ) : (
-                    <>Proceed to Payment <Upload className="h-4 w-4 ml-2" /></>
+                    <>{globalT.primaryCta} <Upload className="h-4 w-4 ml-2" /></>
                   )}
                 </Button>
+
+                <p className="text-[11px] text-center text-muted-foreground leading-tight">
+                  {t.description_title_4}
+                </p>
               </form>
             </div>
           </div>

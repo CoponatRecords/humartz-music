@@ -28,7 +28,7 @@ export const useSearch = () => {
   return context;
 };
 
-// --- LOGO COMPONENT ---
+// --- LOGO COMPONENT (Restored original colors) ---
 const HumartzVerificationLogo = ({ status }: { status: string | null }) => {
   let colorClass = "text-orange-500"; 
   let displayLabel = "Pending";
@@ -60,20 +60,10 @@ const HumartzVerificationLogo = ({ status }: { status: string | null }) => {
 export const SearchProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  
-  // Results for specific query
   const [results, setResults] = useState<SearchResults | null>(null);
-  // Results for "Latest" (initial view)
-  const [recentResults, setRecentResults] = useState<SearchResults | null>(null);
-  
   const [loading, setLoading] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(false);
-
   const [selectedItem, setSelectedItem] = useState<TrackResult | null>(null);
   const [copied, setCopied] = useState(false);
-  const [verifyStatus, setVerifyStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-
-  // --- ACTIONS ---
 
   const copyToClipboard = (text: string) => {
     if (!text) return;
@@ -82,51 +72,6 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleVerify = async (trackId: number) => {
-    setVerifyStatus('loading');
-    try {
-      const data = await getMerkleProof(trackId);
-      const isValid = MerkleTree.verify(
-        data.proof,
-        data.leaf,
-        EXPECTED_ROOT,
-        keccak256,
-        { sortPairs: true }
-      );
-      if (isValid) {
-        setVerifyStatus('success');
-      } else {
-        setVerifyStatus('error');
-      }
-    } catch (err) {
-      setVerifyStatus('error');
-    }
-  };
-
-  // --- AUTOMATIC VERIFICATION TRIGGER ---
-  useEffect(() => {
-    if (selectedItem?.id && selectedItem.merkleLeaf && selectedItem.verificationStatus === 'yes') {
-      handleVerify(selectedItem.id);
-    } else {
-      setVerifyStatus('idle');
-    }
-  }, [selectedItem]);
-
-  // --- FETCH RECENT ON OPEN ---
-  useEffect(() => {
-    if (open && !recentResults) {
-      setInitialLoading(true);
-      // Calling search with empty string usually returns latest/all in many backends
-      // If your backend requires a specific function (e.g. getLatest()), swap this out.
-      searchGlobal("") 
-        .then((data) => setRecentResults(data))
-        .catch((err) => console.error("Failed to load recent", err))
-        .finally(() => setInitialLoading(false));
-    }
-  }, [open, recentResults]);
-
-
-  // --- HANDLE SEARCH INPUT ---
   useEffect(() => {
     const handler = setTimeout(async () => {
       if (query.length < 2) {
@@ -146,11 +91,6 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
     return () => clearTimeout(handler);
   }, [query]);
 
-  // Clear Detail View on new search
-  useEffect(() => {
-    if (selectedItem && query) setSelectedItem(null);
-  }, [query]);
-
   return (
     <SearchContext.Provider value={{ open, setOpen }}>
       {children}
@@ -159,15 +99,15 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
         <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[20vh] sm:pt-[15vh]">
           {/* Overlay */}
           <div 
-            className="fixed inset-0 bg-background/60 backdrop-blur-[2px] transition-all duration-100"
+            className="fixed inset-0 bg-background/80 backdrop-blur-sm transition-all duration-100"
             onClick={() => setOpen(false)}
           />
           
           {/* Modal Container */}
-          <div className="relative z-50 w-full max-w-lg overflow-hidden rounded-xl border border-white/10 bg-background/85 backdrop-blur-md shadow-2xl animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 flex flex-col max-h-[600px]">
+          <div className="relative z-50 w-full max-w-lg overflow-hidden rounded-xl border border-border bg-background shadow-2xl animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 flex flex-col max-h-[600px]">
             
             {/* Header */}
-            <div className="flex items-center border-b border-white/10 px-3 py-2 shrink-0">
+            <div className="flex items-center border-b border-border px-3 py-2 shrink-0">
               <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
               <input
                 value={query}
@@ -182,16 +122,14 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
             </div>
 
             {/* Body */}
-            <div className="overflow-y-auto p-2 min-h-[300px]">
-              
+            <div className="overflow-y-auto p-2 min-h-[200px]">
               {loading && (
-                <div className="flex items-center justify-center py-6 text-sm text-muted-foreground">
+                <div className="flex items-center justify-center py-10 text-sm text-muted-foreground">
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Searching...
                 </div>
               )}
 
-              {/* --- DETAIL VIEW --- */}
               {!loading && selectedItem ? (
                  <div className="animate-in slide-in-from-right-4 duration-200">
                     <button 
@@ -202,7 +140,6 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
                     </button>
 
                     <div className="px-2 pb-4">
-                        {/* Title & Status */}
                         <div className="flex items-start justify-between mb-6">
                             <div>
                                 <h3 className="text-lg font-semibold tracking-tight">{selectedItem.title}</h3>
@@ -211,21 +148,19 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
                             <HumartzVerificationLogo status={selectedItem.verificationStatus} />
                         </div>
 
-                        {/* Database Info */}
                         <div className="space-y-4 rounded-lg border bg-muted/30 p-4 text-sm">
-
                             <div className="flex flex-col gap-1">
                                 <span className="flex items-center text-xs font-semibold text-muted-foreground uppercase">
-                                <Fingerprint className="mr-1.5 h-3 w-3" /> Proof Folder Hash
+                                <Fingerprint className="mr-1.5 h-3 w-3" /> Proof Hash
                                 </span>
                                 <div className="flex items-center gap-2">
-                                    <code className="flex-1 break-all font-mono text-[10px] bg-background/50 p-2 rounded border text-muted-foreground">
+                                    <code className="flex-1 break-all font-mono text-[10px] bg-background p-2 rounded border text-muted-foreground">
                                         {selectedItem.merkleLeaf || "Pending"}
                                     </code>
                                     {selectedItem.merkleLeaf && (
                                       <button 
                                           onClick={() => copyToClipboard(selectedItem.merkleLeaf || "")}
-                                          className="flex h-8 w-8 items-center justify-center rounded border bg-background/50 hover:bg-muted"
+                                          className="flex h-8 w-8 items-center justify-center rounded border bg-background hover:bg-muted transition-colors"
                                       >
                                           {copied ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}
                                       </button>
@@ -233,47 +168,10 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
                                 </div>
                             </div>
                         </div>
-
-                        {/* --- BLOCKCHAIN VERIFICATION SECTION --- */}
-                        {/* {selectedItem.verificationStatus === 'yes' && (
-                            <div className="mt-6 border-t pt-6">
-                              <h4 className="text-xs font-semibold text-muted-foreground uppercase mb-3">Blockchain Verification</h4>
-
-                              {verifyStatus === 'loading' && (
-                                <div className="w-full flex items-center justify-center gap-2 rounded-md bg-muted/50 px-4 py-3 text-sm text-muted-foreground animate-pulse">
-                                  <Loader2 className="h-4 w-4 animate-spin" /> 
-                                  <span>Verifying cryptographic proof...</span>
-                                </div>
-                              )}
-
-                              {verifyStatus === 'success' && (
-                                <div className="w-full animate-in zoom-in-95 flex flex-col gap-1 rounded-md bg-green-500/10 border border-green-500/20 p-3">
-                                    <div className="flex items-center gap-2 text-sm font-semibold text-green-600">
-                                        <ShieldCheck className="h-5 w-5" /> 
-                                        Verified Match
-                                    </div>
-                                    <p className="text-[11px] text-green-600/80 pl-7">
-                                        Cryptographically proven to be part of the official registry.
-                                    </p>
-                                </div>
-                              )}
-
-                              {verifyStatus === 'error' && (
-                                <div className="w-full animate-in zoom-in-95 flex items-center justify-center gap-2 rounded-md bg-red-500/10 border border-red-500/20 px-4 py-3 text-sm font-medium text-red-600">
-                                  <XCircle className="h-4 w-4" /> 
-                                  Verification Failed (Root Mismatch)
-                                </div>
-                              )}
-                            </div>
-                        )} */}
                     </div>
                  </div>
               ) : (
-                /* --- LIST VIEW --- */
                 <>
-                
-
-                  {/* Search Results State */}
                   {results && (
                     <>
                       <div className="mb-2 mt-2 px-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -291,6 +189,27 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
                 </>
               )}
             </div>
+
+            {/* --- GET CERTIFIED FOOTER (B/W Design) --- */}
+            <div className="border-t border-border p-3 bg-muted/10 shrink-0">
+              <Link 
+                href="/upload" 
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between w-full group rounded-lg border border-border bg-background px-4 py-3 text-sm transition-all hover:bg-secondary/50"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground/5 text-foreground">
+                    <Sparkles className="h-4 w-4" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-semibold text-foreground">Get Certified</div>
+                    <div className="text-[11px] text-muted-foreground">Verify your tracks on the registry</div>
+                  </div>
+                </div>
+                <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground" />
+              </Link>
+            </div>
+
           </div>
         </div>
       )}
@@ -303,9 +222,9 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
 const TrackItem = ({ track, onClick }: { track: any, onClick: () => void }) => (
   <div 
     onClick={onClick}
-    className="flex cursor-pointer items-center rounded-md px-2 py-3 text-sm hover:bg-white/10 transition-colors group"
+    className="flex cursor-pointer items-center rounded-md px-2 py-3 text-sm hover:bg-muted transition-colors group"
   >
-    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-muted/50 mr-3">
+    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-muted mr-3">
         <Disc className="h-4 w-4 text-muted-foreground" />
     </div>
     <div className="flex w-full items-center justify-between pr-2 min-w-0">
@@ -318,13 +237,6 @@ const TrackItem = ({ track, onClick }: { track: any, onClick: () => void }) => (
       </div>
     </div>
   </div>
-);
-
-const CommandLink = ({ href, setOpen, icon, children }: any) => (
-  <Link href={href} onClick={() => setOpen(false)} className="flex items-center rounded-sm px-2 py-2 text-sm hover:bg-accent group">
-    <span className="mr-3 flex h-4 w-4 items-center justify-center text-muted-foreground group-hover:text-primary transition-colors">{icon}</span>
-    {children}
-  </Link>
 );
 
 export const SearchTrigger = ({ className, placeholder = "Search..." }: { className?: string; placeholder?: string }) => {
