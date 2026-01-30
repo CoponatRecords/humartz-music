@@ -1,7 +1,7 @@
 // app/api/upload/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { getSignedUrlForUpload } from "@api/upload/r2";
-import { prisma } from "@/prisma/prisma"; // adjust to your path
+import { prisma } from "@repo/database";
 
 export async function POST(request: NextRequest) {
   try {
