@@ -1,4 +1,4 @@
-import  prisma  from '@repo/database';
+import  {prisma}  from '@repo/database';
 
 export async function GET() {
   try {
