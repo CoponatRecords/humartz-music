@@ -29,14 +29,14 @@ const Footer = () => {
           </div>
 
           {/* Social */}
-          {/* <div>
+           <div>
             <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Connect</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">LinkedIn</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">Instagram</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">Twitter</a></li>
+              <li><a href="https://www.linkedin.com/in/sebastiencoponat/" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">LinkedIn</a></li>
+              <li><a href="https://github.com/CoponatRecords/Humartz" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">GitHub</a></li>
+              {/* <li><a href="#" className="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">Twitter</a></li> */}
             </ul>
-          </div> */}
+          </div> 
 
           {/* Legal */}
           <div>
