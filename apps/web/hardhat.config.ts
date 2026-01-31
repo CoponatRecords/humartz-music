@@ -9,7 +9,7 @@ const config: HardhatUserConfig = {
   networks: {
     // Arbitrum Sepolia (Testnet)
     "arbitrum-sepolia": {
-      type: "http", // <--- ADD THIS LINE
+      type: "http", 
       url: process.env.ARB_SEPOLIA_RPC_URL || "",
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
     },
