@@ -12,6 +12,60 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  // Changed to String to match Clerk IDs and your Order model
+  id        String   @id @default(cuid()) 
+  email     String   @unique
+  name      String?
+  username  String?  @unique
+  bio       String?
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  Track     Track[]
+  orders    Order[]
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  price       Int      
+  orders      OrderItem[]
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+  totalAmount     Int
+  currency        String      @default("usd")
+  status          OrderStatus @default(PENDING)
+  stripeSessionId String?     @unique 
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model OrderItem {
+  id              String  @id @default(cuid())
+  orderId         String
+  order           Order   @relation(fields: [orderId], references: [id])
+  productId       String
+  product         Product @relation(fields: [productId], references: [id])
+  priceAtPurchase Int 
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+// --- MUSIC MODELS ---
+
 model Artist {
   id        Int           @id @unique @default(autoincrement())
   name      String
@@ -44,10 +98,13 @@ model Track {
   artworkUrl  String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  authorId    Int
+  
+  authorId    String        // Changed to String to match User.id
+  User        User          @relation(fields: [authorId], references: [id])
+  
   albumId     Int?
   Album       Album?        @relation(fields: [albumId], references: [id])
-  User        User          @relation(fields: [authorId], references: [id])
+  
   artists     TrackArtist[]
   Genre       Genre[]       @relation("TrackGenre")
 }
@@ -72,7 +129,7 @@ model Album {
   label       String?
   artistId    Int?
   createdAt   DateTime   @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime   @updatedAt // Added @updatedAt
   Artist      Artist?    @relation(fields: [artistId], references: [id])
   Track       Track[]
 }
@@ -82,25 +139,13 @@ model Genre {
   name      String   @unique
   slug      String?  @unique
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt // Added @updatedAt
   Track     Track[]  @relation("TrackGenre")
 }
 
 model MerkleRoot {
-  id   Int    @id
+  id   Int    @id @default(autoincrement())
   root String
-}
-
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  username  String?  @unique
-  bio       String?
-  avatarUrl String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime
-  Track     Track[]
 }
 
 enum AlbumType {
