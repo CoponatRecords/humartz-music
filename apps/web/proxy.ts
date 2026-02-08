@@ -53,10 +53,18 @@ const composedMiddleware = createNEMO(
 
 // Clerk middleware wraps other middleware in its callback
 export default authMiddleware(async (_auth, request, event) => {
-  // Run security headers first
+  const { pathname } = request.nextUrl;
+
+  // 1. BYPASS FOR WEBHOOKS
+  // If this is a webhook, return early to skip i18n and security checks
+  if (pathname.startsWith('/api/webhooks')) {
+    return NextResponse.next();
+  }
+
+  // 2. Run security headers for all other requests
   const headersResponse = securityHeaders();
 
-  // Then run composed middleware (i18n + arcjet)
+  // 3. Then run composed middleware (i18n + arcjet)
   const middlewareResponse = await composedMiddleware(
     request as unknown as NextRequest,
     event
