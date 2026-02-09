@@ -32,8 +32,6 @@ export * from "./lib/fonts";
 
 // Export your provider (already there)
 export * from "./providers/theme"; 
-
-// ✅ Add these to export the components used in the Header
 export * from "./components/ui/button";
 export * from "./components/ui/label";
 export * from "./components/ui/calendar";
@@ -61,8 +59,6 @@ export * from "./components/ui/dialog";
 export * from "./components/ui/carousel";
 export * from "./postcss.config.mjs";
 export * from "./components/ui/skeleton";
-
-// ✅ Export your utils and fonts
 export * from "./lib/utils";
 export * from "./lib/fonts";
 export * from "./hooks/use-mobile";
