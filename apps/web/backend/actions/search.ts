@@ -5,7 +5,8 @@ import { prisma as database } from "@repo/database";
 export type SearchResults = {
   tracks: { 
     id: number; 
-    merkleLeaf: string | null;
+    folderHash: string | null;
+    txHash: string | null;
     title: string; 
     slug: string | null; 
     artistName: string; 
@@ -32,7 +33,9 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
         where: {
           OR: [
             { title: { contains: cleanQuery, mode: "insensitive" } },
-            { merkleLeaf: { contains: cleanQuery, mode: "insensitive" } },
+            { folderHash: { contains: cleanQuery, mode: "insensitive" } },
+            { txHash: { contains: cleanQuery, mode: "insensitive" } },
+
             { 
               artists: { 
                 some: { 
@@ -47,8 +50,7 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
           id: true,
           title: true,
           slug: true,
-          isVerified: true, // DB String: "TRUE", "FALSE", "PENDING", etc.
-          merkleLeaf: true, 
+          isVerified: true,
           artists: {
             take: 1,
             where: { role: "MAIN" },
@@ -81,7 +83,8 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
         id: t.id,
         title: t.title,
         slug: t.slug,
-        merkleLeaf: t.merkleLeaf,
+        txHash: t.txHash,
+        folderHash: t.folderHash,
         artistName: t.artists[0]?.artist.name ?? "Unknown Artist",
         verificationStatus: status, 
       };
