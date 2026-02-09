@@ -43,12 +43,23 @@ export const Hero = async ({ dictionary }: HeroProps) => (
           </h1>
 
           {/* Subtitle */}
-<h2 className="max-w-4xl mx-auto flex items-center justify-center gap-x-2 text-center font-medium text-2xl sm:text-3xl md:text-4xl tracking-tight">
-  {/* The static part of your subtitle */}
-  <span>{dictionary.web.home.meta.subtitle}</span>
+<h2 className="
+  max-w-4xl mx-auto 
+  flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1
+  text-center font-medium 
+  text-xl xs:text-2xl sm:text-3xl md:text-4xl 
+  tracking-tight leading-tight
+">
+  {/* Static part – allow it to wrap naturally */}
+  <span className="whitespace-nowrap">
+    {dictionary.web.home.meta.subtitle}
+  </span>
 
-  {/* The stabilized rotator */}
-  <div className="relative inline-flex flex-col text-left text-primary min-w-[120px] sm:min-w-[150px]">
+  {/* Rotator wrapper – much more flexible width */}
+<div className="
+    relative inline-flex justify-center 
+    text-primary
+  ">
     <WordRotate />
   </div>
 </h2>
