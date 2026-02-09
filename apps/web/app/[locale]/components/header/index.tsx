@@ -15,7 +15,7 @@ import {
 } from "@repo/design-system";
 import { cn } from "@repo/design-system";
 import type { Dictionary } from "@repo/internationalization";
-import { Menu, MoveRight, User, ShieldCheck } from "lucide-react";
+import { Menu, MoveRight, User, ShieldCheck, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -40,10 +40,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
   const pathname = pathnameHook();
   const [isOpen, setOpen] = useState(false);
   
-  // 1. Get the current user data
   const { user } = useUser();
-  
-  // 2. Define Admin Logic (Checking publicMetadata for role === 'admin')
   const isAdmin = user?.publicMetadata?.role === "admin";
 
   const isHome = pathname === "/";
@@ -134,10 +131,9 @@ export const Header = ({ dictionary }: HeaderProps) => {
         <div className="flex items-center justify-end gap-3 min-w-fit">
           <div className="hidden lg:flex items-center gap-3">
             
-            {/* ADMIN BUTTON - DESKTOP */}
             <SignedIn>
               {isAdmin && (
-                <Button asChild variant="outline" size="sm" className="gap-2 border-primary/20 bg-primary/5 hover:bg-primary/10 transition-all">
+                <Button asChild variant="outline" size="sm" className="gap-2 border-primary/20 bg-primary/5 hover:bg-primary/10">
                   <Link href="/admin">
                     <ShieldCheck className="h-4 w-4 text-primary" />
                     Admin
@@ -155,12 +151,27 @@ export const Header = ({ dictionary }: HeaderProps) => {
             <ModeToggle />
             <div className="h-6 border-r mx-1" />
 
+            {/* MY DASHBOARD - LOGIC UPDATED HERE */}
             <SignedOut>
-              <SignInButton mode="modal">
+              <SignInButton mode="modal" fallbackRedirectUrl="/dashboard">
+                <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-primary">
+                  <LayoutDashboard className="h-4 w-4" />
+                  My Dashboard
+                </Button>
+              </SignInButton>
+              
+              <SignInButton mode="modal" fallbackRedirectUrl="/dashboard">
                 <Button size="sm" variant="default">Sign In</Button>
               </SignInButton>
             </SignedOut>
+
             <SignedIn>
+              <Button asChild variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-primary">
+                <Link href="/dashboard">
+                  <LayoutDashboard className="h-4 w-4" />
+                  My Dashboard
+                </Link>
+              </Button>
               <UserButton 
                 afterSignOutUrl="/" 
                 appearance={{ elements: { userButtonAvatarBox: "h-8 w-8" } }}
@@ -197,20 +208,28 @@ export const Header = ({ dictionary }: HeaderProps) => {
                   </div>
 
                   <div className="flex flex-col gap-6 px-2">
-                    
-                    {/* ADMIN LINK - MOBILE */}
                     <SignedIn>
                       {isAdmin && (
-                        <Link 
-                          href="/admin" 
-                          onClick={() => setOpen(false)} 
-                          className="text-xl font-bold text-primary flex items-center justify-between"
-                        >
+                        <Link href="/admin" onClick={() => setOpen(false)} className="text-xl font-bold text-primary flex items-center justify-between">
                           Admin Panel
                           <ShieldCheck className="h-5 w-5" />
                         </Link>
                       )}
+                      <Link href="/dashboard" onClick={() => setOpen(false)} className="text-xl font-bold text-primary flex items-center justify-between">
+                        My Dashboard
+                        <LayoutDashboard className="h-5 w-5" />
+                      </Link>
                     </SignedIn>
+
+                    {/* MOBILE SIGNED OUT DASHBOARD TRIGGER */}
+                    <SignedOut>
+                      <SignInButton mode="modal" fallbackRedirectUrl="/dashboard">
+                        <button onClick={() => setOpen(false)} className="text-xl font-medium tracking-tight hover:text-primary transition-colors flex items-center justify-between w-full text-left">
+                          My Dashboard
+                          <LayoutDashboard className="h-4 w-4" />
+                        </button>
+                      </SignInButton>
+                    </SignedOut>
 
                     <Link href={dynamicLink.href} onClick={() => setOpen(false)} className="text-xl font-medium tracking-tight hover:text-primary transition-colors flex items-center justify-between">
                       {dynamicLink.title}
@@ -223,13 +242,6 @@ export const Header = ({ dictionary }: HeaderProps) => {
                         <MoveRight className="h-4 w-4" />
                       </Link>
                     ))}
-                    
-                    <SignedIn>
-                      <Link href="/dashboard" onClick={() => setOpen(false)} className="text-xl font-medium tracking-tight hover:text-primary transition-colors flex items-center justify-between">
-                        Dashboard
-                        <User className="h-4 w-4" />
-                      </Link>
-                    </SignedIn>
 
                     <div className="pt-2">
                       <SearchProvider>
