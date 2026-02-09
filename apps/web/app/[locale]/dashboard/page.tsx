@@ -56,7 +56,7 @@ const CONTRACT_ADDRESS = "0x9953BcE1F56b4bC1051321B394d2B6055c506619";
                 </CardDescription>
               </div>
               <Button asChild size="sm">
-                <Link href="/get-certified">New Certification</Link>
+                <Link href="/get-certified">New Certification <ArrowUpRight className="h-1 w-1" /></Link>
               </Button>
             </div>
           </CardHeader>

@@ -31,7 +31,7 @@ export default function SuccessPage({ params: { locale } }: { params: { locale: 
           <div className="flex items-start gap-4 rounded-lg border bg-card p-4 text-left shadow-sm">
             <Mail className="mt-1 h-5 w-5 text-primary shrink-0" />
             <div>
-              <p className="font-semibold">Check your inbox in 24 hours</p>
+              <p className="font-semibold">Check your inbox and dashboardin 24 hours</p>
               <p className="text-sm text-muted-foreground">We will send you a confirmation email once processing is complete.</p>
             </div>
           </div>
@@ -53,7 +53,7 @@ export default function SuccessPage({ params: { locale } }: { params: { locale: 
             </Link>
           </Button>
           <Button asChild variant="ghost" className="w-full">
-            <Link href={`/${locale}`}>
+            <Link href={`https://humartz.com/`}>
               Return Home
             </Link>
           </Button>
