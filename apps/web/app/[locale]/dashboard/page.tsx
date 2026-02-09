@@ -11,6 +11,7 @@ import {
 } from "@repo/design-system";
 import { Music2Icon, ArrowUpRight, ShieldCheck, Clock, ClipboardX, Fingerprint, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -61,7 +62,7 @@ export default async function DashboardPage() {
           <CardContent>
             <div className="space-y-4">
               {tracks.length > 0 ? (
-                tracks.map((track) => (
+                tracks.map((track: { id: Key | null | undefined; title: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; isVerified: string; txHash: any; folderHash: string; }) => (
                   <div key={track.id} className="flex items-center gap-4 rounded-lg border p-3 hover:bg-muted/50 transition-colors">
                     <div className="bg-primary/10 p-2 rounded-md">
                       <Music2Icon className="h-4 w-4 text-primary" />
