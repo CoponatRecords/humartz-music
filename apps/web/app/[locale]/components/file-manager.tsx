@@ -11,12 +11,15 @@ import {
   TicketPercent,
   AlertCircle,
   FileAudio,
-  FolderOpen
+  FolderOpen,
+  Info,
+  LayoutDashboard
 } from "lucide-react";
 import { useState, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs"; 
+import { useUser, SignInButton } from "@clerk/nextjs"; 
 import { hashFolder } from "../hashFolder";
+import Link from "next/link";
 
 type FileManagerClientProps = {
   dictionary: Dictionary;
@@ -27,7 +30,6 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
   const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
   
-  // Scoping translations
   const t = dictionary.web?.upload?.files ?? {};
   const globalT = dictionary.web?.global ?? {};
   const contactFormT = dictionary.web?.contact?.hero?.form ?? {};
@@ -43,7 +45,6 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  // Auto-infer user data when Clerk loads
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
       const fullName = user.fullName || 
@@ -74,66 +75,43 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
 
   const handleUpload = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!user?.id) {
-      setError("You must be signed in to upload.");
-      return;
-    }
-
     if (!projectFiles.length || !masterFile) {
       setError(t.noFiles || "Please select all required files");
       return;
     }
-
     setIsUploading(true);
     setError(null);
-
     try {
       const allFiles = [masterFile, ...projectFiles];
       const hash = await hashFolder(allFiles);
-      
-      const folderPrefix = `user_${user.id}/${sanitize(trackName)}_${hash}/`;
-
+      const folderPrefix = `user_${user?.id || 'guest'}/${sanitize(trackName)}_${hash}/`;
       let uploaded = 0;
-      // 1. Upload Master
       await uploadToR2(masterFile, folderPrefix + "master_" + masterFile.name);
       uploaded++;
-
-      // 2. Upload Project Files
       for (const file of projectFiles) {
         const relativePath = file.webkitRelativePath || file.name;
         await uploadToR2(file, folderPrefix + "project/" + relativePath);
         uploaded++;
         setUploadProgress(Math.round((uploaded / allFiles.length) * 100));
       }
-
-      // 3. Sync to DB with "PENDING" status and hash
       const verifyRes = await fetch("/api/upload", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           endpoint: "verify-promo", 
-          userId: user.id,
+          userId: user?.id || null,
           promoCode: promoCode.trim(),
-          email: email,
+          email,
           artistName: name,
-          trackName: trackName,
+          trackName,
           storagePath: folderPrefix,
           folderHash: hash 
         }),
       });
-
       if (!verifyRes.ok) throw new Error("Database sync failed");
       const dbData = await verifyRes.json();
-
-      if (dbData.isFree === true) {
-        router.push(`/${locale}/success`); 
-      } else {
-        router.push(`/${locale}/payment`); 
-      }
-      
+      router.push(dbData.isFree ? `/${locale}/success` : `/${locale}/payment`);
     } catch (err: any) {
-      console.error("Upload process error:", err);
       setError(err.message || t.errorUpload);
       setIsUploading(false);
     }
@@ -142,30 +120,48 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
   const allFieldsFilled = !!name && !!email && !!trackName && !!masterFile && projectFiles.length > 0;
 
   return (
-    <div className="w-full py-20 lg:py-40">
+    <div className="w-full py-12 lg:py-24">
       <div className="container mx-auto max-w-6xl px-4">
+        
+        {/* Top Header Row with Dashboard Access */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-16 pb-8 border-b">
+          <div className="space-y-1">
+            <h1 className="font-bold text-4xl tracking-tighter md:text-5xl">{t.title}</h1>
+            <p className="text-lg text-muted-foreground">{t.description}</p>
+          </div>
+          
+          <div className="shrink-0">
+            {isSignedIn ? (
+              <Button asChild variant="outline" className="gap-2">
+                <Link href={`/${locale}/dashboard`}>
+                  <LayoutDashboard className="h-4 w-4" />
+                  Access my dashboard
+                </Link>
+              </Button>
+            ) : (
+              <SignInButton mode="modal">
+                <Button variant="outline" className="gap-2">
+                  <LayoutDashboard className="h-4 w-4" />
+                  Access my dashboard
+                </Button>
+              </SignInButton>
+            )}
+          </div>
+        </div>
+
         <div className="grid gap-16 lg:grid-cols-2">
           
-          {/* Left Column - Benefits (Restored) */}
+          {/* Left Column - Benefits */}
           <div className="flex flex-col gap-8">
-            <div className="flex flex-col gap-4">
-              <h1 className="max-w-xl text-left font-bold text-4xl tracking-tighter md:text-6xl">
-                {t.title}
-              </h1>
-              <p className="max-w-md text-left text-lg text-muted-foreground">
-                {t.description}
-              </p>
-            </div>
-
             <div className="space-y-8">
               <div className="space-y-4">
                 <h3 className="font-bold text-xl flex items-center gap-2">
                   {t.description_title_1}
                 </h3>
                 <ul className="grid gap-3 text-sm text-muted-foreground ml-9">
-                  <li className="flex items-start gap-2 italic">{t.description_subtitle_21}</li>
-                  <li className="flex items-start gap-2">{t.description_subtitle_22}</li>
-                  <li className="flex items-start gap-2">{t.description_subtitle_23}</li>
+                  <li className="italic">{t.description_subtitle_21}</li>
+                  <li>{t.description_subtitle_22}</li>
+                  <li>{t.description_subtitle_23}</li>
                 </ul>
               </div>
 
@@ -187,7 +183,18 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
           {/* Right Column - Form */}
           <div className="flex items-start justify-center">
             <div className="w-full max-w-md flex flex-col gap-6 rounded-2xl border bg-card p-8 shadow-sm">
-              <div className="flex flex-col gap-1 mb-2">
+              
+              {/* Conditional Pro-Tip for Guests */}
+              {!isSignedIn && (
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/5 border border-primary/10 text-xs text-primary">
+                  <Info className="h-4 w-4 shrink-0" />
+                  <p>
+                    <strong>Pro tip:</strong> Signing in lets you track your certifications in a personal dashboard, but it&apos;s not required to upload!
+                  </p>
+                </div>
+              )}
+
+              <div className="flex flex-col gap-1">
                 <h2 className="text-2xl font-bold">{t.uploadTitle}</h2>
                 <p className="text-sm text-muted-foreground">{t.description_subtitle_1}</p>
               </div>
@@ -196,88 +203,34 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
                 <div className="grid gap-4">
                   <div className="grid gap-2">
                     <Label>{contactFormT.firstName || "Name"}</Label>
-                    <Input 
-                      value={name} 
-                      onChange={(e) => setName(e.target.value)} 
-                      placeholder={!isLoaded ? "Loading profile..." : ""}
-                      disabled={isUploading || !isLoaded} 
-                      required 
-                    />
+                    <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={!isLoaded ? "Loading..." : ""} disabled={isUploading || !isLoaded} required />
                   </div>
-                  
                   <div className="grid gap-2">
                     <Label>Email</Label>
-                    <Input 
-                      type="email" 
-                      value={email} 
-                      onChange={(e) => setEmail(e.target.value)} 
-                      placeholder={!isLoaded ? "Loading profile..." : ""}
-                      disabled={isUploading || !isLoaded} 
-                      required 
-                    />
+                    <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={!isLoaded ? "Loading..." : ""} disabled={isUploading || !isLoaded} required />
                   </div>
-
                   <div className="grid gap-2">
                     <Label>{t.trackName || "Track Title"}</Label>
                     <Input value={trackName} onChange={(e) => setTrackName(e.target.value)} disabled={isUploading} required />
                   </div>
-
                   <div className="grid gap-2 pt-2">
-                    <Label className="flex items-center gap-2">
-                      <FolderOpen className="h-4 w-4 text-primary" /> {t.description_title_2}
-                    </Label>
-                    <Input 
-                      type="file" 
-                      /* @ts-ignore */ 
-                      webkitdirectory="" 
-                      multiple 
-                      onChange={(e) => e.target.files && setProjectFiles(Array.from(e.target.files))} 
-                      disabled={isUploading} 
-                      className="bg-muted/20"
-                    />
+                    <Label className="flex items-center gap-2"><FolderOpen className="h-4 w-4 text-primary" /> {t.description_title_2}</Label>
+                    <Input type="file" /* @ts-ignore */ webkitdirectory="" multiple onChange={(e) => e.target.files && setProjectFiles(Array.from(e.target.files))} disabled={isUploading} className="bg-muted/20" />
                   </div>
-
                   <div className="grid gap-2">
-                    <Label className="flex items-center gap-2">
-                      <FileAudio className="h-4 w-4 text-primary" /> {t.description_title_3}
-                    </Label>
-                    <Input 
-                      type="file" 
-                      accept="audio/*" 
-                      onChange={(e) => setMasterFile(e.target.files ? e.target.files[0] : null)} 
-                      disabled={isUploading} 
-                      className="bg-muted/20"
-                    />
+                    <Label className="flex items-center gap-2"><FileAudio className="h-4 w-4 text-primary" /> {t.description_title_3}</Label>
+                    <Input type="file" accept="audio/*" onChange={(e) => setMasterFile(e.target.files ? e.target.files[0] : null)} disabled={isUploading} className="bg-muted/20" />
                   </div>
-
                   <div className="grid gap-2 pt-4 border-t mt-2">
-                    <Label className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase">
-                      <TicketPercent className="h-3.5 w-3.5" /> Promo Code
-                    </Label>
-                    <Input 
-                      placeholder="Enter code" 
-                      value={promoCode} 
-                      onChange={(e) => { setPromoCode(e.target.value); setError(null); }}
-                      disabled={isUploading}
-                      className={isFree ? "border-green-500 ring-0 bg-green-500/5" : ""}
-                    />
+                    <Label className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase"><TicketPercent className="h-3.5 w-3.5" /> Promo Code</Label>
+                    <Input placeholder="Enter code" value={promoCode} onChange={(e) => { setPromoCode(e.target.value); setError(null); }} disabled={isUploading} className={isFree ? "border-green-500 ring-0 bg-green-500/5" : ""} />
                   </div>
                 </div>
 
-                {error && (
-                  <div className="flex items-center gap-2 text-sm font-medium text-destructive bg-destructive/10 p-3 rounded-lg border border-destructive/20">
-                    <AlertCircle className="h-4 w-4 shrink-0" /> {error}
-                  </div>
-                )}
+                {error && <div className="flex items-center gap-2 text-sm font-medium text-destructive bg-destructive/10 p-3 rounded-lg border border-destructive/20"><AlertCircle className="h-4 w-4 shrink-0" /> {error}</div>}
 
                 <Button type="submit" size="lg" disabled={!allFieldsFilled || isUploading} className="w-full">
-                  {isUploading ? (
-                    <>{t.uploading} {uploadProgress}% <Loader2 className="h-4 w-4 animate-spin ml-2" /></>
-                  ) : isFree ? (
-                    <>Submit Free <CheckCircle2 className="h-4 w-4 ml-2" /></>
-                  ) : (
-                    <>{globalT.primaryCta} <Upload className="h-4 w-4 ml-2" /></>
-                  )}
+                  {isUploading ? <>{t.uploading} {uploadProgress}% <Loader2 className="h-4 w-4 animate-spin ml-2" /></> : isFree ? <>Submit Free <CheckCircle2 className="h-4 w-4 ml-2" /></> : <>{globalT.primaryCta} <Upload className="h-4 w-4 ml-2" /></>}
                 </Button>
               </form>
             </div>
