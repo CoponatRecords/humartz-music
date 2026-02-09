@@ -74,7 +74,7 @@ const WhitePaperPage = async ({ params }: PageProps) => {
         <p className="text-muted-foreground leading-7">
   Humartz is an 
   <a 
-    href="https://github.com/CoponatRecords/humartz-music" 
+    href="https://github.com/CoponatRecords/humartz" 
     target="_blank" 
     rel="noopener noreferrer"
     className="transition-colors hover:text-foreground underline decoration-muted-foreground/50 underline-offset-4"

@@ -114,7 +114,19 @@ export default async function DashboardPage() {
                         <code className="text-[10px] font-mono text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
                            {track.folderHash ? `${track.folderHash.substring(0, 6)}...${track.folderHash.slice(-4)}` : "n/a"}
                         </code>
+        
                     </div>
+
+                    <div className="hidden sm:flex flex-col items-end gap-1 px-4 border-l h-8 justify-center">
+
+                                      <span className="text-[8px] uppercase text-muted-foreground font-bold flex items-center gap-1">
+                           <Fingerprint className="h-2.5 w-2.5" /> Blockchain Transaction
+                        </span>
+                          <code className="text-[10px] font-mono text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                           {track.txHash ? `${track.txHash.substring(0, 6)}...${track.txHash.slice(-4)}` : "n/a"}
+                        </code>
+                                            </div>
+
 
                     {/* ONLY DISPLAY ARROW IF TRANSACTION HASH EXISTS */}
                     {track.txHash ? (
