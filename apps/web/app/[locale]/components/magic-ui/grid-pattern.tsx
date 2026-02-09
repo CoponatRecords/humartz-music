@@ -27,7 +27,7 @@ export function GridPattern({
     >
       {/* Background Image */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat "
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat grayscale"
         style={{ 
           backgroundImage: `url('${wallpaper.src}')`,
           zIndex: -30 

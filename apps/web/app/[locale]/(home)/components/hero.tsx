@@ -6,7 +6,7 @@ import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import { GridPattern } from "../../components/magic-ui/grid-pattern";
 import { cn } from "@repo/design-system";
-
+import { WordRotate } from "./word-rotate"; // Adjust path
 type HeroProps = {
   dictionary: Dictionary;
 };
@@ -43,9 +43,15 @@ export const Hero = async ({ dictionary }: HeroProps) => (
           </h1>
 
           {/* Subtitle */}
-          <h2 className="max-w-2xl text-center font-medium text-2xl sm:text-3xl md:text-4xl tracking-tight">
-            {dictionary.web.home.meta.subtitle}
-          </h2>
+<h2 className="max-w-4xl mx-auto flex items-center justify-center gap-x-2 text-center font-medium text-2xl sm:text-3xl md:text-4xl tracking-tight">
+  {/* The static part of your subtitle */}
+  <span>{dictionary.web.home.meta.subtitle}</span>
+
+  {/* The stabilized rotator */}
+  <div className="relative inline-flex flex-col text-left text-primary min-w-[120px] sm:min-w-[150px]">
+    <WordRotate />
+  </div>
+</h2>
 
           {/* Description */}
           <p className="max-w-3xl text-center text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed tracking-tight">
