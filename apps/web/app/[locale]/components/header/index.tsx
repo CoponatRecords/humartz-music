@@ -59,7 +59,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
-      <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between py-2 px-4 lg:grid lg:grid-cols-[auto_1fr_auto]">
+      <div className="mx-auto flex w-full items-center justify-between py-2 px-4 lg:grid lg:grid-cols-[auto_1fr_auto]">
         
         {/* LOGO SECTION */}
         <div className="flex items-left ml-3 sm:ml-1">
