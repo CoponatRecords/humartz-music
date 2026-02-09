@@ -1,8 +1,11 @@
+"use client";
+
 import { Button } from "@repo/design-system";
 import type { Dictionary } from "@repo/internationalization";
-import { MoveRight, PhoneCall } from "lucide-react";
+import { PhoneCall } from "lucide-react";
 import Link from "next/link";
-import { env } from "@/env";
+import { GridPattern } from "../../components/magic-ui/grid-pattern";
+import { cn } from "@repo/design-system";
 
 type CTAProps = {
   dictionary: Dictionary;
@@ -11,28 +14,49 @@ type CTAProps = {
 export const CTA = ({ dictionary }: CTAProps) => (
   <div className="w-full py-20 lg:py-40">
     <div className="container mx-auto">
-      <div className="flex flex-col items-center gap-8 rounded-md bg-muted p-4 text-center lg:p-14">
-        <div className="flex flex-col gap-2">
-          <h3 className="max-w-xl font-regular text-3xl tracking-tighter md:text-5xl">
+      {/* 1. We removed 'bg-muted' from the main class 
+          2. We added 'isolation-auto' to create a new stacking context 
+      */}
+      <div className="relative flex flex-col items-center gap-8 rounded-3xl overflow-hidden p-8 text-center lg:p-14 border border-border/50 shadow-2xl">
+        
+        {/* THE BASE COLOR: We put the grey color on its own layer at the very back */}
+        <div className="absolute inset-0 bg-muted -z-30" />
+
+        {/* THE WALLPAPER: Now sits at -10, on top of the grey but behind text */}
+        <GridPattern 
+          width={40} 
+          height={40} 
+          className={cn(
+            "absolute inset-0 -z-10 opacity-100", // Increased opacity to ensure it's seen
+            "[mask-image:radial-gradient(circle,white_0%,transparent_100%)]"
+          )} 
+        />
+
+        <div className="flex flex-col gap-4 relative z-10">
+          <h3 className="max-w-xl font-bold text-3xl tracking-tighter md:text-5xl">
             {dictionary.web.home.cta.title}
           </h3>
           <p className="max-w-xl text-lg text-muted-foreground leading-relaxed tracking-tight">
             {dictionary.web.home.cta.description}
           </p>
         </div>
-        <div className="flex flex-row gap-4">
-          <Button asChild className="gap-4" variant="outline">
+
+        <div className="flex flex-row gap-4 relative z-10">
+          <Button 
+            asChild 
+            className="gap-4 bg-foreground text-background hover:bg-foreground/90 transition-colors" 
+          >
             <Link href="/get-certified">
-              {dictionary.web.global.primaryCta}{" "}
+              {dictionary.web.global.primaryCta}
               <PhoneCall className="h-4 w-4" />
             </Link>
           </Button>
-          {/* <Button asChild className="gap-4">
-            <Link href={env.NEXT_PUBLIC_APP_URL}>
-              {dictionary.web.global.secondaryCta}{" "}
-              <MoveRight className="h-4 w-4" />
+
+          <Button asChild className="gap-4" variant="outline">
+            <Link href="/about">
+              About Humartz
             </Link>
-          </Button> */}
+          </Button>
         </div>
       </div>
     </div>
