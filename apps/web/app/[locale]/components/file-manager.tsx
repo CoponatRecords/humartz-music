@@ -99,11 +99,11 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           endpoint: "verify-promo", 
-          userId: user?.id || null,
+          userId: user?.id ,
           promoCode: promoCode.trim(),
           email,
           artistName: name,
-          trackName,
+          trackName: trackName,
           storagePath: folderPrefix,
           folderHash: hash 
         }),

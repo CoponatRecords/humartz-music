@@ -22,7 +22,6 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
-  // Relations
   Track     Track[]
   orders    Order[]
 }
@@ -63,26 +62,11 @@ enum OrderStatus {
   REFUNDED
 }
 
-// --- MUSIC MODELS ---
-
-model Artist {
-  id        Int           @id @unique @default(autoincrement())
-  name      String
-  slug      String        @unique
-  bio       String?
-  imageUrl  String?
-  country   String?
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  Album     Album[]
-  tracks    TrackArtist[]
-}
-
 model Track {
   email       String?       
   folderHash  String?
   id          Int           @id @default(autoincrement())
-  isVerified  String   @default("pending")
+  isVerified  String        @default("pending")
   title       String
   slug        String?       @unique
   duration    Int?
@@ -101,70 +85,12 @@ model Track {
   promoCode   String?       // Added promoCode field
   txHash      String?       // Added txHash field
   authorId    String        
-  User        User          @relation(fields: [authorId], references: [id])
+  Userid String?
   
   albumId     Int?
-  Album       Album?        @relation(fields: [albumId], references: [id])
-  
-  artists     TrackArtist[]
-  Genre       Genre[]       @relation("TrackGenre")
-}
+  Album       String?        
+  artists     String? 
+  Genre       String?     
 
-model TrackArtist {
-  trackId  Int
-  artistId Int
-  role     ArtistRole? @default(MAIN)
-  artist   Artist      @relation(fields: [artistId], references: [id], onDelete: Cascade)
-  track    Track       @relation(fields: [trackId], references: [id], onDelete: Cascade)
-
-  @@id([trackId, artistId])
-}
-
-model Album {
-  id          Int        @id @default(autoincrement())
-  title       String
-  slug        String?    @unique
-  artworkUrl  String?
-  releaseDate DateTime?
-  type        AlbumType?
-  label       String?
-  artistId    Int?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt // Added @updatedAt
-  Artist      Artist?    @relation(fields: [artistId], references: [id])
-  Track       Track[]
-}
-
-model Genre {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  slug      String?  @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt // Added @updatedAt
-  Track     Track[]  @relation("TrackGenre")
-}
-
-model MerkleRoot {
-  id   Int    @id @default(autoincrement())
-  root String
-}
-
-enum AlbumType {
-  ALBUM
-  SINGLE
-  EP
-  COMPILATION
-}
-
-enum ArtistRole {
-  MAIN
-  FEATURED
-  REMIXER
-  PRODUCER
-  CO_PRODUCER
-  ADDITIONAL_PRIMARY
-  VOCALS
-  INSTRUMENTAL
-  MIXER
-  OTHER
+  users User[]
 }
