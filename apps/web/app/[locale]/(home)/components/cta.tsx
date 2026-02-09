@@ -20,7 +20,7 @@ export const CTA = ({ dictionary }: CTAProps) => (
       <div className="relative flex flex-col items-center gap-8 rounded-3xl overflow-hidden p-8 text-center lg:p-14 border border-border/50 shadow-2xl">
         
         {/* THE BASE COLOR: We put the grey color on its own layer at the very back */}
-        <div className="absolute inset-0 bg-muted -z-30" />
+        <div className="absolute inset-0 bg-dark -z-30" />
 
         {/* THE WALLPAPER: Now sits at -10, on top of the grey but behind text */}
         <GridPattern 

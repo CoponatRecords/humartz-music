@@ -73,7 +73,7 @@ export const Hero = async ({ dictionary }: HeroProps) => (
           </Button>
 
           {/* About Us Button */}
-          <Button asChild className="gap-2 sm:gap-4 w-full sm:w-auto" size="lg" variant="outline">
+          <Button asChild className="gap-2 sm:gap-4 w-full sm:w-auto border-2"  size="lg" variant="outline">
             <Link href="/about">
               About Us
             </Link>
