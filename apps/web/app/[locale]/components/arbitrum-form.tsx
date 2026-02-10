@@ -134,9 +134,9 @@ export const ArbitrumForm = ({ dictionary }: ArbitrumFormProps) => {
         {/* LEFT COLUMN: INFO & STATUS (Unchanged) */}
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-4">
-            <h4 className="text-3xl md:text-5xl font-bold tracking-tighter">Blockchain Proof</h4>
+            <h4 className="text-3xl md:text-5xl font-bold tracking-tighter">Utilities</h4>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Anchor your digital assets to Arbitrum for immutable verification.
+              Useful tools and links to keep smiling.
             </p>
           </div>
 
