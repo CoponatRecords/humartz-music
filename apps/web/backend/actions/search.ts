@@ -47,13 +47,10 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
         isVerified: true,
         txHash: true,      // Fix: Added missing field
         folderHash: true,  // Fix: Added missing field
-        artists: true,     // Fix: This is a string in your schema
+        artistName: true,     // Fix: This is a string in your schema
       },
     });
 
-    // Note: Your schema doesn't have an 'Artist' model, only an 'artists' string on Track.
-    // If you plan to add an Artist model later, you'll need to update the schema.
-    // For now, we return an empty array for artists to prevent crashes.
     const artists: any[] = []; 
 
     const formattedTracks = tracks.map((t: {
