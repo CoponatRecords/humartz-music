@@ -1,10 +1,9 @@
 "use client";
 
 import { useId } from "react";
-import { cn } from "@repo/design-system";
 import wallpaper from "./wallpaper.webp"; 
 
-export function GridPattern({
+export function BackgroundImage({
   width = 40,
   height = 40,
   x = -1,
@@ -30,18 +29,15 @@ export function GridPattern({
         className="absolute inset-0 bg-cover bg-center bg-no-repeat grayscale"
         style={{ 
           backgroundImage: `url('${wallpaper.src}')`,
-          zIndex: -30 
+          zIndex: -1000 
         }}
       />
       
       {/* Dark tint overlay */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" style={{ zIndex: -25 }} />
-
-      {/* Animated Grid SVG */}
-    
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" style={{ zIndex: -25 }} />    
 
       {/* Optional: Extra bottom "smoother" to blend into your site background color */}
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" style={{ zIndex: -10 }} />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-background to-transparent" style={{ zIndex: -10 }} />
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { FAQ } from "./components/faq";
 import { Features } from "./components/features";
 import Hero from "./components/hero";
 import { Stats } from "./components/stats";
-import { GridPattern } from "../components/magic-ui/grid-pattern";
+import { BackgroundImage } from "../components/magic-ui/grid-pattern";
 import { cn } from "../../../../../packages/design-system/lib/utils";
 
 type HomeProps = {
@@ -38,7 +38,7 @@ const Home = async ({ params }: HomeProps) => {
         </div>
       )}
 
-          <GridPattern 
+          <BackgroundImage 
         width={30} 
                 height={30} 
 

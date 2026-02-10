@@ -92,12 +92,35 @@ export const NextJsShowcase = ({ dictionary }: { dictionary: Dictionary }) => {
               )}
             >
               <Link
-                href={card.href}
-                target={card.href.startsWith("http") ? "_blank" : undefined}
-                className="block transition-transform active:scale-[0.98]"
-              >
-                <CardContent card={card} dictionary={dictionary} isMobile />
-              </Link>
+  key={card.key}
+  href={card.href}
+  target={card.href.startsWith("http") ? "_blank" : undefined}
+  className={cn(
+    "absolute w-95 xl:w-110 cursor-pointer group",
+    
+    // Base transition – controls the "leave" speed (slower → feels like finishing)
+    "transition-all duration-1000 ease-out",           // ← 1000ms = 1s for leave
+    
+    // On hover: override to faster duration
+    "hover:duration-300",                              // ← quick on enter (300ms)
+    
+    // Visual changes (same as before)
+    "hover:scale-[1.04] hover:-translate-y-8 hover:z-60 hover:shadow-2xl",
+    
+    // 3D only on lg+
+    "lg:[transform:rotateY(-18deg)_rotateX(6deg)_skewY(2deg)]",
+    "lg:hover:[transform:rotateY(0deg)_rotateX(0deg)_skewY(0deg)]",
+    
+    // Positioning
+    card.key === "whitepaper" && "lg:-translate-x-12 lg:-translate-y-13",
+    card.key === "arbiscan"   && "lg:-translate-x-24 lg:-translate-y-22",
+    
+    // z-index
+    card.isMain ? "z-30" : card.key === "whitepaper" ? "z-20" : "z-10"
+  )}
+>
+  <CardContent card={card} dictionary={dictionary} />
+</Link>
             </div>
           );
         })}

@@ -34,7 +34,7 @@ export default function CardContent({ card, dictionary, isMobile = false }: Card
       txHash: "0x7a8f9b...3e2d1f",
     },
     {
-      title: "Organic Stem",
+      title: "Mona Lisa",
       status: "pending" as const,
       txHash: null,
     },
