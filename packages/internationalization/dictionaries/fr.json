@@ -102,6 +102,8 @@
       "getStartedP1": "Humartz est le premier protocole qui certifie votre art comme étant réellement créé par l'homme à l'ère des contenus générés par l'IA.",
       "getStartedP2": "Nous fournissons un système de preuve de création pour certifier votre travail et protéger votre propriété intellectuelle.",
       "showcase": {
+            "newCertification":"Nouvelle Certification",
+
         "arbiscanDescription": "Vérification on-chain via Arbitrum One.",
         "whitepaperDescription": "Documentation du protocole cryptographique.",
         "dashboardDescription": "Gérez votre catalogue et vos certifications.",

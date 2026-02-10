@@ -11,6 +11,7 @@ import {
   Music2Icon,
   ShieldCheck,
   FileText,
+  ExternalLink,
 } from "lucide-react";
 import Link from "next/link";
 import { GridPattern } from "../../components/magic-ui/grid-pattern";
@@ -18,6 +19,7 @@ import { cn } from "@repo/design-system";
 import { WordRotate } from "./word-rotate";
 
 // ── Card Content Component (shared between mobile & desktop) ──
+// ── Card Content Component ──
 const CardContent = ({
   card,
   dictionary,
@@ -29,155 +31,230 @@ const CardContent = ({
 }) => {
   const { home } = dictionary.web;
 
+  // Brand-aligned demo tracks (feel free to replace with real data later)
+  const demoTracks = [
+    {
+      title: "Main Symphony",
+      status: "certified",
+      txHash: "0x7a8f9b...3e2d1f",
+    },
+    {
+      title: "Organic Stem",
+      status: "pending",
+      txHash: null,
+    },
+    // You can add more or make dynamic
+  ];
+
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-xl border shadow-xl transition-all duration-300",
-        "group-hover:shadow-primary/30 group-active:shadow-primary/40",
+        "overflow-hidden rounded-xl border shadow-xl transition-all duration-400",
+        "group-hover:shadow-primary/25 group-hover:border-primary/40",
+        "group-active:scale-[0.995]",
         card.type === "whitepaper"
-          ? "bg-black border-white/10"
-          : "bg-white border-gray-200"
+          ? "bg-gradient-to-b from-black to-zinc-950 border-white/8"
+          : "bg-gradient-to-b from-white to-gray-50/80 border-gray-200/70"
       )}
     >
-      {/* Header */}
+      {/* Header – more premium feel */}
       <div
         className={cn(
-          "px-4 py-3 border-b flex items-center justify-between",
+          "px-4 sm:px-5 py-3.5 border-b flex items-center justify-between",
           card.headerBg,
-          card.type === "whitepaper" ? "border-white/10" : "border-gray-200"
+          card.type === "whitepaper" ? "border-white/9" : "border-gray-200/60"
         )}
       >
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           <div className="flex gap-1.5">
-            <div className="h-2 w-2 rounded-full bg-red-400/70" />
-            <div className="h-2 w-2 rounded-full bg-yellow-400/70" />
-            <div className="h-2 w-2 rounded-full bg-green-400/70" />
+            <div className="h-2.5 w-2.5 rounded-full bg-red-500/60 ring-1 ring-red-400/30" />
+            <div className="h-2.5 w-2.5 rounded-full bg-yellow-500/60 ring-1 ring-yellow-400/30" />
+            <div className="h-2.5 w-2.5 rounded-full bg-green-500/60 ring-1 ring-green-400/30" />
           </div>
           <span
             className={cn(
-              "text-xs font-bold uppercase tracking-wide",
-              card.textColor
+              "text-xs sm:text-sm font-extrabold uppercase tracking-wider",
+              card.type === "whitepaper" ? "text-zinc-300" : card.textColor
             )}
           >
             {card.title}
           </span>
         </div>
-        <ArrowUpRight
-          className={cn(
-            "h-4 w-4 transition-colors",
-            card.type === "whitepaper"
-              ? "text-zinc-400 group-hover:text-primary"
-              : "text-gray-400 group-hover:text-primary"
-          )}
-        />
+
+        <div className="flex items-center gap-2">
+        
+          <ArrowUpRight
+            className={cn(
+              "h-4 w-4 transition-colors",
+              card.type === "whitepaper"
+                ? "text-zinc-400 group-hover:text-primary"
+                : "text-gray-500 group-hover:text-primary"
+            )}
+          />
+        </div>
       </div>
 
       {/* Body */}
-      <div className={cn("min-h-[240px] p-5", card.color)}>
+      <div className={cn("p-5 sm:p-6", card.color)}>
         {card.type === "dashboard" && (
-          <div className="flex flex-col gap-3.5 text-black">
-            {[
-              { t: "Main Symphony", s: "certified" },
-              { t: "Organic Stem", s: "pending" },
-            ].map((item, i) => (
+          <div className="space-y-4">
+            {demoTracks.map((item, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3"
+                className={cn(
+                  "flex items-center gap-4 rounded-xl border p-4 transition-colors",
+                  "hover:bg-primary/5 border-gray-200/60",
+                  item.status === "certified" && "border-green-500/30 bg-green-50/40"
+                )}
               >
-                <Music2Icon className="h-5 w-5 text-primary shrink-0" />
+                <div className="relative">
+                  <div className="bg-primary/10 p-3 rounded-lg">
+                    <Music2Icon className="h-5 w-5 text-primary" />
+                  </div>
+                  {item.status === "certified" && (
+                    <div className="absolute -bottom-1 -right-1 bg-green-600 text-white rounded-full p-1 shadow-md">
+                      <ShieldCheck className="h-3.5 w-3.5" />
+                    </div>
+                  )}
+                </div>
+
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-sm truncate">{item.t}</p>
-                  <div className="flex items-center gap-1.5 mt-0.5">
-                    {item.s === "certified" ? (
-                      <ShieldCheck className="h-3.5 w-3.5 text-green-600" />
-                    ) : (
-                      <Clock className="h-3.5 w-3.5 text-orange-600" />
-                    )}
+                  <p className="font-semibold text-black truncate leading-tight">
+                    {item.title}
+                  </p>
+                  <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                     <span
                       className={cn(
-                        "text-xs font-medium uppercase",
-                        item.s === "certified" ? "text-green-700" : "text-orange-700"
+                        "text-xs font-bold uppercase flex items-center gap-1.5 px-2.5 py-1 rounded-full",
+                        item.status === "certified"
+                          ? "bg-green-100 text-green-800 border border-green-200"
+                          : "bg-orange-100 text-orange-800 border border-orange-200"
                       )}
                     >
-                      {item.s}
+                      {item.status === "certified" ? (
+                        <ShieldCheck className="h-3.5 w-3.5" />
+                      ) : (
+                        <Clock className="h-3.5 w-3.5" />
+                      )}
+                      {item.status === "certified"
+                        ? "CERTIFIED"
+                        :  "PENDING"}
                     </span>
+
+                    {item.txHash && (
+                      <div
+                        className="text-xs text-blue-600 flex items-center gap-1 font-medium"
+                      >
+                        {item.txHash}<ExternalLink className="h-3 w-3 text-black-600" />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             ))}
+
+            {/* Call to action inside card */}
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="w-full mt-3 text-primary bg-black"
+            >
+              <Link href="/get-certified"
+>
+                {home?.showcase?.newCertification || "Certify New Track"}{" "}
+                <ArrowUpRight className="ml-1.5 h-3.5 w-3.5" />
+              </Link>
+            </Button>
           </div>
         )}
 
         {card.type === "arbiscan" && (
-          <div className="text-black space-y-4 text-sm">
-            <div className="bg-blue-50/80 p-2.5 rounded border border-blue-200 font-mono text-xs truncate">
-              Contract: 0x9953...6619
+          <div className="space-y-5 text-sm">
+            <div className="bg-blue-200/70 text-black from-blue-50 to-indigo-50/60 p-3.5 rounded-xl border border-blue-200/70 font-mono text-xs">
+              <span className="text-black">Contract • </span>
+              0x9953BcE1F56b4bC1051321B394d2B6055c506619
             </div>
+
             <div className="space-y-3">
-              {[1, 2, 3].map((i) => (
+              {[1,2,3].map(i => (
                 <div
                   key={i}
-                  className="flex justify-between items-center text-xs border-b border-gray-100 pb-2 last:border-0"
+                  className="flex justify-between items-center text-xs py-2 border-b border-gray-100 last:border-0"
                 >
                   <span className="text-blue-600 font-mono">0x{i}df...4a</span>
-                  <span className="text-gray-500 font-medium">Transfer</span>
-                  <span className="text-gray-400">{i * 2} min ago</span>
+                  <span className="text-gray-600 font-medium">Mint / Transfer</span>
+                  <span className="text-gray-500">{i * 2} min ago</span>
                 </div>
               ))}
+            </div>
+
+            <div className="text-xs text-blue-600 hover:text-blue-800 font-medium inline-flex items-center gap-1.5"
+>
+
+                View full contract on Arbiscan <ExternalLink className="h-3 w-3" />
             </div>
           </div>
         )}
 
         {card.type === "whitepaper" && (
           <div className="text-white space-y-5 text-sm">
-            <div className="flex items-center gap-3 pb-3 border-b border-white/10">
-              <FileText className="h-6 w-6 text-primary" />
+            <div className="flex items-start gap-4 pb-4 border-b border-white/12">
+              <div className="bg-primary/20 p-2.5 rounded-lg">
+                <FileText className="h-6 w-6 text-primary" />
+              </div>
               <div>
-                <div className="font-bold tracking-tight text-primary">
-                  PROTOCOL SPEC
+                <div className="font-extrabold tracking-tight text-primary text-base">
+                  HUMARTZ PROTOCOL
                 </div>
-                <div className="text-xs text-zinc-500 font-mono">
-                  SHA-256 • IPFS
+                <div className="text-xs text-zinc-500 font-mono mt-0.5">
+                  v1.0 • Keccak256 • Arbitrum Anchor
                 </div>
               </div>
             </div>
-            <p className="text-zinc-300 leading-relaxed text-xs italic">
+
+            <p className="text-zinc-300 leading-relaxed text-xs italic opacity-90">
               {home?.showcase?.whitepaperTeaser ||
-                "The Humartz protocol establishes a decentralized proof-of-humanity verification layer using zero-knowledge proofs..."}
+                "Decentralized cryptographic certification of human authorship — anchoring creative provenance on-chain without exposing original content."}
             </p>
-            <div className="grid grid-cols-2 gap-4 mt-2">
-              <div className="p-3 border border-white/10 rounded-lg bg-white/4">
-                <Database className="h-4 w-4 text-orange-400 mb-1" />
-                <div className="text-xs font-semibold text-zinc-200">STORAGE</div>
-                <div className="text-[11px] text-zinc-500 font-mono">R2 Cloudflare</div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-3.5 border border-white/10 rounded-xl bg-white/5 backdrop-blur-sm">
+                <Database className="h-5 w-5 text-orange-400 mb-2" />
+                <div className="text-xs font-bold text-zinc-200">STORAGE</div>
+                <div className="text-[11px] text-zinc-500 font-mono mt-0.5">Encrypted Database</div>
               </div>
-              <div className="p-3 border border-white/10 rounded-lg bg-white/4">
-                <Fingerprint className="h-4 w-4 text-primary mb-1" />
-                <div className="text-xs font-semibold text-zinc-200">IDENTITY</div>
-                <div className="text-[11px] text-zinc-500 font-mono">
-                  Unique Hash & ID
-                </div>
+              <div className="p-3.5 border border-white/10 rounded-xl bg-white/5 backdrop-blur-sm">
+                <Fingerprint className="h-5 w-5 text-primary mb-2" />
+                <div className="text-xs font-bold text-zinc-200">HUMANITY PROOF</div>
+                <div className="text-[11px] text-zinc-500 font-mono mt-0.5">
+                  Hash Commitment</div>
               </div>
             </div>
           </div>
         )}
       </div>
 
-      {/* Footer */}
+      {/* Footer – more subtle & branded */}
       <div
         className={cn(
-          "px-5 py-4 border-t text-xs italic",
+          "px-5 py-3.5 border-t text-xs italic flex items-center justify-between",
           card.type === "whitepaper"
-            ? "bg-black/60 border-white/5 text-zinc-400"
-            : "bg-gray-50 border-gray-200 text-gray-600"
+            ? "bg-black/40 border-white/8 text-zinc-500"
+            : "bg-gray-100/60 border-gray-200/60 text-gray-600"
         )}
       >
-        {card.description}
+        <span>{card.description}</span>
+
+        {card.type === "dashboard" && (
+          <span className="text-[10px] text-primary/80 font-medium">
+            Powered by Arbitrum
+          </span>
+        )}
       </div>
     </div>
   );
 };
-
 // ── Stacked Cards Showcase ──
 export const NextJsShowcase = ({ dictionary }: { dictionary: Dictionary }) => {
   const { web: { home, global, header } } = dictionary;

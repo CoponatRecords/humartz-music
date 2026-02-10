@@ -112,10 +112,11 @@
     "Multi-media"
   ],
 
-  "getStartedP1": "Humartz is the first protocol that certifies your art as truly human-made in an era of AI-generated content.",
+  "getStartedP1": "Humartz certifies your art as truly human-made in an era of AI-generated content.",
   "getStartedP2": "We provide a proof-of-creation system to get your work certified, protecting your intellectual property.",
 
   "showcase": {
+    "newCertification":"New Certification",
     "arbiscanDescription": "On-chain verification via Arbitrum One.",
     "whitepaperDescription": "Cryptographic protocol documentation.",
     "dashboardDescription": "Manage your catalogue & certifications.",
