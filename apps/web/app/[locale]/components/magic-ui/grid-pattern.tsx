@@ -2,7 +2,7 @@
 
 import { useId } from "react";
 import { cn } from "@repo/design-system";
-import wallpaper from "./wallpaper.jpg"; 
+import wallpaper from "./wallpaper.webp"; 
 
 export function GridPattern({
   width = 40,

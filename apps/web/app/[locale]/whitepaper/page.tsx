@@ -13,7 +13,7 @@ import {
   FileAudio,
   Activity,
 } from "lucide-react";
-import WallpaperImg from "../components/magic-ui/wallpaper.jpg";
+import WallpaperImg from "../components/magic-ui/wallpaper.webp";
 
 type PageProps = {
   params: Promise<{

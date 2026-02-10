@@ -19,10 +19,10 @@ import Link from "next/link";
 import { GridPattern } from "../../components/magic-ui/grid-pattern";
 import { cn } from "@repo/design-system";
 import { WordRotate } from "./word-rotate"; 
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 
 // ── Card Content ────────────────────────────────────────────────
-const CardContent = ({
+const CardContent = memo(({
   card,
   dictionary,
   isMobile = false,
@@ -243,7 +243,7 @@ const CardContent = ({
       </div>
     </div>
   );
-};
+});
 
 // ── Stacked Cards Showcase ──────────────────────────────────────
 export const NextJsShowcase = ({ dictionary }: { dictionary: Dictionary }) => {
