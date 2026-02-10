@@ -5,7 +5,7 @@ import { createMetadata } from "@repo/seo/metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle, ShieldCheck, Database, Fingerprint, FileAudio, Activity } from "lucide-react";
-
+import WallpaperImg from "../components/magic-ui/wallpaper.jpg";
 type PageProps = {
   params: Promise<{
     locale: string;
@@ -235,17 +235,39 @@ const WhitePaperPage = async ({ params }: PageProps) => {
             </section> */}
 
             {/* Footer Note */}
-            <div className="mt-20 p-8 bg-muted/30 rounded-2xl text-center">
-              <h3 className="text-lg font-semibold mb-2">Join the Protocol</h3>
-              <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">
-                At Humartz we provide the infrastructure to value human intent.
-              </p>
-              <div className="flex justify-center gap-4">
-                <Link href="/contact" className="px-6 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 transition">
-                  Contact Sales
-                </Link>
-              </div>
-            </div>
+  {/* Footer Note with Background Image */}
+<div className="relative mt-20 overflow-hidden rounded-2xl p-12 text-center border">
+  {/* The Background Image Layer */}
+<div 
+    className="absolute inset-0 z-0"
+    style={{ 
+      backgroundImage: `url(${WallpaperImg.src})`,
+      backgroundSize: '100% auto', // This forces the image to fit the width
+      backgroundRepeat: 'no-repeat',
+      backgroundColor: 'black' // Fallback color for the top/bottom if image is short
+    }}
+  />
+  {/* Dark Overlay for Contrast (keeps text readable) */}
+  <div className="absolute inset-0 z-10 bg-black/70 backdrop-blur-[2px]" />
+
+  {/* Content Layer */}
+  <div className="relative z-20">
+    <h3 className="text-2xl font-semibold mb-2 text-white tracking-tight">
+      Join the Protocol
+    </h3>
+    <p className="text-zinc-300 text-sm mb-8 max-w-md mx-auto leading-relaxed">
+      At Humartz, we provide the cryptographic infrastructure to value and protect human intent in a digital-first world.
+    </p>
+    <div className="flex justify-center gap-4">
+      <Link 
+        href="/contact" 
+        className="px-8 py-2.5 bg-primary text-primary-foreground rounded-full text-sm font-medium hover:bg-primary/90 transition-all active:scale-95 shadow-lg"
+      >
+        Contact Sales
+      </Link>
+    </div>
+  </div>
+</div>
 
           </article>
         </div>
