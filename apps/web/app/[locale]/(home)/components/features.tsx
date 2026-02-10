@@ -33,10 +33,10 @@ export const Features = ({ dictionary }: FeaturesProps) => {
             {/* FEATURE 1: Expert Human Review */}
             <div className="group relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-xl p-6 lg:col-span-2">
               <div 
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                className="absolute inset-0 bg-cover bg-center duration-700 "
                 style={{ backgroundImage: `url('${featureImages[0]}')` }}
               />
-              <div className="absolute inset-0 bg-black/60 group-hover:bg-black/70 transition-opacity" />
+              <div className="absolute inset-0 bg-black/60 " />
               <div className="relative z-10 flex h-full flex-col justify-between text-white">
                 <UserCheck className="h-7 w-7 text-orange-400" />
                 <div>
@@ -49,7 +49,7 @@ export const Features = ({ dictionary }: FeaturesProps) => {
             {/* FEATURE 2: Cryptographic Proof */}
             <div className="group relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-xl p-6">
               <div 
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                className="absolute inset-0 bg-cover bg-center "
                 style={{ backgroundImage: `url('${featureImages[1]}')` }}
               />
               <div className="absolute inset-0 bg-black/60 group-hover:bg-black/70 transition-opacity" />
@@ -65,10 +65,10 @@ export const Features = ({ dictionary }: FeaturesProps) => {
             {/* FEATURE 3: Public Verification URL */}
             <div className="group relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-xl p-6">
               <div 
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url('${featureImages[2]}')` }}
               />
-              <div className="absolute inset-0 bg-black/60 group-hover:bg-black/70 transition-opacity" />
+              <div className="absolute inset-0 bg-black/60 " />
               <div className="relative z-10 flex h-full flex-col justify-between text-white">
                 <LinkIcon className="h-7 w-7 text-orange-400" />
                 <div>
@@ -81,10 +81,10 @@ export const Features = ({ dictionary }: FeaturesProps) => {
             {/* FEATURE 4: IP Protection */}
             <div className="group relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-xl p-6 lg:col-span-2">
               <div 
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url('${featureImages[3]}')` }}
               />
-              <div className="absolute inset-0 bg-black/70 group-hover:bg-black/80 transition-opacity" />
+              <div className="absolute inset-0 bg-black/70 " />
               <div className="relative z-10 flex h-full flex-col justify-between text-white">
                 <ShieldCheck className="h-7 w-7 text-orange-400" />
                 <div>

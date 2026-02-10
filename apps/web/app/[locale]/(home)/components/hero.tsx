@@ -1,6 +1,4 @@
 // components/hero/Hero.tsx
-import { GridPattern } from "../../components/magic-ui/grid-pattern"; // adjust path
-import { cn } from "@repo/design-system";
 import HeroContent from "./HeroContent";
 import GetStartedSection from "./GetStartedSection";
 import type { Dictionary } from "@repo/internationalization";
