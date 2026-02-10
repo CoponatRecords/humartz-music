@@ -76,7 +76,7 @@ export async function searchGlobal(query: string): Promise<SearchResults> {
         txHash: t.txHash,
         folderHash: t.folderHash,
         // Since 'artists' is a string in your DB, we use it directly
-        artistName: t.artists ?? "Unknown Artist",
+        artistName: t.artistName ?? "Unknown Artist",
         verificationStatus: status, 
       };
     });
