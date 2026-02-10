@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { CTA } from "./components/cta";
 import { FAQ } from "./components/faq";
 import { Features } from "./components/features";
-import { Hero } from "./components/hero";
+import Hero from "./components/hero";
 import { Stats } from "./components/stats";
 import { GridPattern } from "../components/magic-ui/grid-pattern";
 import { cn } from "../../../../../packages/design-system/lib/utils";
