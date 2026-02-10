@@ -43,18 +43,24 @@ export const Header = ({ dictionary }: HeaderProps) => {
   const { user } = useUser();
   const isAdmin = user?.publicMetadata?.role === "admin";
 
-const isHome = pathname === "/" || /^\/(fr|en)(\/)?$/.test(pathname ?? "");
+  const isHome = pathname === "/" || /^\/(fr|en)(\/)?$/.test(pathname ?? "");
   const dynamicLink = isHome
     ? { title: dictionary.web.header.about, href: "/about" }
     : { title: dictionary.web.header.home, href: "/" };
 
+  // Navigation items updated with Contact
   const navigationItems: NavItem[] = [
     { title: dictionary.web.header.whitepaper, href: "/whitepaper" },
+        { 
+      title: dictionary.web.header.contact || "Contact", 
+      href: "/contact" 
+    },
     {
       title: dictionary.web.header.product.title,
       description: dictionary.web.header.product.description,
       items: [{ title: dictionary.web.header.product.pricing, href: "/pricing" }],
     },
+
   ];
 
   return (
@@ -136,7 +142,7 @@ const isHome = pathname === "/" || /^\/(fr|en)(\/)?$/.test(pathname ?? "");
                 <Button asChild variant="outline" size="sm" className="gap-2 border-primary/20 bg-primary/5 hover:bg-primary/10">
                   <Link href="/admin">
                     <ShieldCheck className="h-4 w-4 text-primary" />
-                    Admin
+                    {dictionary.web.header.admin}
                   </Link>
                 </Button>
               )}
@@ -151,12 +157,11 @@ const isHome = pathname === "/" || /^\/(fr|en)(\/)?$/.test(pathname ?? "");
             <ModeToggle />
             <div className="h-6 border-r mx-1" />
 
-            {/* MY DASHBOARD - LOGIC UPDATED HERE */}
             <SignedOut>
               <SignInButton mode="modal" fallbackRedirectUrl="/dashboard">
                 <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-primary">
                   <LayoutDashboard className="h-4 w-4" />
-                                                  {dictionary.web.header.dashboard}
+                  {dictionary.web.header.dashboard}
                 </Button>
               </SignInButton>
               
@@ -169,7 +174,7 @@ const isHome = pathname === "/" || /^\/(fr|en)(\/)?$/.test(pathname ?? "");
               <Button asChild variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-primary">
                 <Link href="/dashboard">
                   <LayoutDashboard className="h-4 w-4" />
-                                                  {dictionary.web.header.dashboard}
+                  {dictionary.web.header.dashboard}
                 </Link>
               </Button>
               <UserButton 
@@ -198,7 +203,7 @@ const isHome = pathname === "/" || /^\/(fr|en)(\/)?$/.test(pathname ?? "");
                     <SignedOut>
                       <SignInButton mode="modal">
                         <Button className="w-full h-12 text-md" onClick={() => setOpen(false)}>
-                          Sign In
+                          {dictionary.web.header.signIn}
                         </Button>
                       </SignInButton>
                     </SignedOut>
@@ -211,7 +216,7 @@ const isHome = pathname === "/" || /^\/(fr|en)(\/)?$/.test(pathname ?? "");
                     <SignedIn>
                       {isAdmin && (
                         <Link href="/admin" onClick={() => setOpen(false)} className="text-xl font-bold text-primary flex items-center justify-between">
-                          Admin Panel
+                          {dictionary.web.header.admin}
                           <ShieldCheck className="h-5 w-5" />
                         </Link>
                       )}
@@ -221,12 +226,10 @@ const isHome = pathname === "/" || /^\/(fr|en)(\/)?$/.test(pathname ?? "");
                       </Link>
                     </SignedIn>
 
-                    {/* MOBILE SIGNED OUT DASHBOARD TRIGGER */}
                     <SignedOut>
                       <SignInButton mode="modal" fallbackRedirectUrl="/dashboard">
                         <button onClick={() => setOpen(false)} className="text-xl font-medium tracking-tight hover:text-primary transition-colors flex items-center justify-between w-full text-left">
-                                                  {dictionary.web.header.dashboard}
-
+                          {dictionary.web.header.dashboard}
                           <LayoutDashboard className="h-4 w-4" />
                         </button>
                       </SignInButton>

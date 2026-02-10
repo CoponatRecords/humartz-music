@@ -252,7 +252,7 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
                   {/* Artist Name Input - Editable independently */}
                   <div className="grid gap-2">
                     <Label>
-                      {dictionary.web.upload.files.artistName?.replace("Art", "Artist") || "Artist Name"}
+                      {dictionary.web.upload.files.artistName}
                     </Label>
                     <Input 
                       placeholder="e.g. Stage name / Alias" 
