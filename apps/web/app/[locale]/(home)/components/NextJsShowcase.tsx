@@ -65,7 +65,7 @@ export const NextJsShowcase = ({ dictionary }: { dictionary: Dictionary }) => {
                 "lg:[transform:rotateY(-18deg)_rotateX(6deg)_skewY(2deg)]",
                 "lg:hover:[transform:rotateY(0deg)_rotateX(0deg)_skewY(0deg)]",
                 card.key === "whitepaper" && "lg:-translate-x-12 lg:-translate-y-11",
-                card.key === "arbiscan" && "lg:-translate-x-24 lg:-translate-y-25",
+                card.key === "arbiscan" && "lg:-translate-x-24 lg:-translate-y-22",
                 zIndex === 30 ? "z-30" : zIndex === 20 ? "z-20" : "z-10"
               )}
             >
