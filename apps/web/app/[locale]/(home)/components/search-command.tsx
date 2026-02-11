@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { Search, X, Music, ArrowRight, Loader2, Disc, ChevronLeft, Fingerprint, Copy, Check, ShieldCheck, XCircle, Sparkles } from "lucide-react";
+import { Search, X, Music, ArrowRight, Loader2, Disc, ChevronLeft, Fingerprint, Copy, Check, ShieldCheck, XCircle, Sparkles, Library } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@repo/design-system"; 
 import { searchGlobal, type SearchResults } from "@backend/actions/search"; 
@@ -49,6 +49,7 @@ const HumartzVerificationLogo = ({ status }: { status: string | null }) => {
     </div>
   );
 };
+
 
 // --- THE PROVIDER ---
 export const SearchProvider = ({ children }: { children: ReactNode }) => {
@@ -240,7 +241,7 @@ export const SearchTrigger = ({ className, placeholder = "Search..." }: { classN
       <Search className="h-4 w-4 opacity-50" />
       <span className="flex-1 text-left truncate">{placeholder}</span>
       <kbd className="hidden sm:inline-flex h-5 items-center gap-1 rounded border bg-background px-1.5 font-mono text-[10px] text-muted-foreground">
-        <span className="text-xs">⌘</span>K
+    <Library className="h-3 w-3" />
       </kbd>
     </button>
   );
