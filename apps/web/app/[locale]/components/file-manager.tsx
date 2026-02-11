@@ -13,7 +13,8 @@ import {
   FileAudio,
   FolderOpen,
   Info,
-  LayoutDashboard
+  LayoutDashboard,
+  LogIn
 } from "lucide-react";
 import { useState, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -223,12 +224,41 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
           {/* Right Column - Form */}
           <div className="flex items-start justify-center">
             <div className="w-full max-w-md flex flex-col gap-6 rounded-2xl border bg-card p-8 shadow-sm">
+
+              
               
               <div className="flex flex-col gap-1">
                 <h2 className="text-2xl font-bold">{t.uploadTitle}</h2>
                 <p className="text-sm text-muted-foreground">{t.description_subtitle_1}</p>
               </div>
 
+{!isSignedIn && isLoaded && (
+  <div className="rounded-lg border bg-muted/40 p-4 text-sm space-y-3">
+    <div className="flex items-start gap-3">
+      <div>
+     <p className="font-medium">
+  <span className="inline-flex items-center gap-2">
+    <Info className="h-5 w-5 text-primary shrink-0" />
+    {dictionary.web.upload.guestDashboardTitle || "Want to track your certification progress?"}
+  </span>
+</p>
+        <p className="text-muted-foreground mt-1">
+          {dictionary.web.upload.guestDashboardText || 
+            "Sign in or create an account to access your personal dashboard. You'll be able to follow the status of your submission, view certificates, and manage future uploads."}
+        </p>
+      </div>
+    </div>
+
+    <div className="flex items-center gap-3 mt-2">
+      <SignInButton mode="modal">
+        <Button variant="outline" size="sm" className="gap-1.5">
+          <LogIn className="h-3.5 w-3.5" />
+          {dictionary.web.header.signIn}
+        </Button>
+      </SignInButton>
+    </div>
+  </div>
+)}
               <form onSubmit={handleUpload} className="flex flex-col gap-5">
                 <div className="grid gap-4">
                   
@@ -298,6 +328,7 @@ export const FileManagerClient = ({ dictionary, locale }: FileManagerClientProps
                     <AlertCircle className="h-4 w-4 shrink-0" /> {error}
                   </div>
                 )}
+
 
                 <Button type="submit" size="lg" disabled={!allFieldsFilled || isUploading} className="w-full">
                   {isUploading ? (

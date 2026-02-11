@@ -4,12 +4,13 @@
       "primaryCta": "Get Certified",
       "primaryCtaNow": "Get Certified Now",
       "secondaryCta": "Verify a Track",
-      "aboutUs": "About Us"
+      "aboutUs": "About Us",
+      "createAccount": "Create Account"
       
     },
 
     "pricing": {
-      "title": "Protect your craft. Secure your rights.",
+      "title": "Protect your craft.",
       "subtitle": "Choose the plan that fits your career—from single releases to entire catalogs.",
 
       "tiers": {
@@ -17,8 +18,8 @@
           "name": "Artist",
           "description": "For independent artists who want to stand out. Prove your single is 100% human-made. Up to 5GB file uploads.",
           "price": "$15",
-          "priceUnit": "/track",
-          "button": "Verify Track",
+          "priceUnit": "/artistic project",
+          "button": "Get Started",
           "buttonLink": "/get-certified"
         },
         "producer": {
@@ -27,7 +28,7 @@
           "price": "$49",
           "priceUnit": "/month",
           "badge": "Best Value",
-          "button": "Start Subscription",
+          "button": "Get Started",
           "buttonLink": "/signup"
         },
         "label": {
@@ -56,7 +57,7 @@
           "turnaround": "72 Hours"
         },
         "producer": {
-          "tracks": "5 Tracks / mo",
+          "tracks": "10 Projects / month",
           "turnaround": "24 Hours",
           "badges": true
         },
@@ -294,6 +295,8 @@
       }
     },
     "upload": {
+      "guestDashboardTitle": "Want to track your certification progress ?",
+      "guestDashboardText": "Start by signing in or creating an account to have access to your personal dashboard. You'll be able to follow the status of your submission and manage certificates.",
       "meta": {
         "title": "Upload your files",
         "description": "Upload your session files to a free file sharing service and send us the link for verification using the provided form."

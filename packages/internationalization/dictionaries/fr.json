@@ -7,20 +7,20 @@
       "aboutUs": "À propos"
     },
     "pricing": {
-      "title": "Protégez votre art. Sécurisez vos droits.",
+      "title": "Protégez votre art.",
       "subtitle": "Choisissez le plan qui correspond à votre carrière — des sorties uniques aux catalogues complets.",
       "tiers": {
         "artist": {
           "name": "Artiste",
-          "description": "Pour les artistes indépendants qui veulent se démarquer. Prouvez que votre single est 100% humain. Jusqu'à 5 Go de fichiers.",
+          "description": "Pour les artistes indépendants qui veulent se démarquer. Jusqu'à 5 Go de fichiers.",
           "price": "15€",
-          "priceUnit": "/morceau",
-          "button": "Vérifier le morceau",
+          "priceUnit": "/projet artistique",
+          "button": "Certifier mon projet",
           "buttonLink": "/get-certified"
         },
         "producer": {
           "name": "Producteur",
-          "description": "Pour les beatmakers et musiciens pro. Vendez vos beats « Certifiés Humains » à prix premium. Jusqu'à 15 Go.",
+          "description": "Pour les artistes professionnels. Jusqu'à 15 Go de fichiers par projet.",
           "price": "49€",
           "priceUnit": "/mois",
           "badge": "Meilleure offre",
@@ -37,9 +37,9 @@
       },
       "features": {
         "proofAndCertificates": "Preuves & Certificats",
-        "expertHumanReview": "Examen humain expert",
-        "blockchainTimestamp": "Ancrage Blockchain Arbitrum",
-        "tracksIncluded": "Morceaux inclus",
+        "expertHumanReview": "Examen humain",
+        "blockchainTimestamp": "Ancrage Blockchain",
+        "tracksIncluded": "Oeuvres incluses",
         "businessAndLegal": "Affaires & Juridique",
         "copyrightRiskAudit": "Audit des risques de droits d'auteur",
         "certifiedHumanBadges": "Badges « Certified Human »",
@@ -47,11 +47,11 @@
       },
       "featureValues": {
         "artist": {
-          "tracks": "1 Morceau",
+          "tracks": "1 Oeuvre Artistique",
           "turnaround": "72 Heures"
         },
         "producer": {
-          "tracks": "5 Morceaux / mois",
+          "tracks": "10 Oeuvres Artistiques / mois",
           "turnaround": "24 Heures",
           "badges": true
         },
@@ -73,7 +73,7 @@
         "Arbiscan": "Arbiscan",
 
       "admin": "Panel Admin",
-      "signin": "Se connecter",
+      "signin": "Se Connecter",
       "home": "Accueil",
       "product": {
         "title": "Certificat",
@@ -83,7 +83,7 @@
       "whitepaper": "Comment ça fonctionne ?",
       "contact": "Contact",
       "about": "À propos",
-      "signIn": "Se connecter",
+      "signIn": "Se Connecter",
       "signUp": "Démarrer la vérification"
     },
     "home": {
@@ -91,7 +91,7 @@
       "meta": {
         "title": "Humartz",
         "subtitle": "Certifie la création humaine :",
-        "description": "Nous vérifions, certifions et ancrons votre art sur la blockchain pour prouver sa création humaine. Sécurisez votre héritage artistique pour toujours."
+        "description": "Nous vérifions, certifions et ancrons votre création artistique sur la blockchain pour prouver son origine 100% humaine."
       },
       "getStartedTitle": "Démarrez en quelques secondes",
       "getStartedSubtitle": "Sécurisé sur la blockchain",
@@ -142,7 +142,7 @@
           },
           {
             "title": "URL de vérification publique",
-            "description": "Recevez un lien blockchain unique pour chaque projet. Partagez-le avec vos clients, éditeurs ou sur votre site web."
+            "description": "Recevez un lien unique pour chaque projet. Partagez-le avec vos clients, éditeurs ou sur votre site web."
           }
         ]
       },
@@ -230,7 +230,7 @@
       },
       "cta": {
         "title": "Sécurisez votre création artistique dès aujourd'hui",
-        "description": "Donnez à votre public la preuve qu'il mérite."
+        "description": "Donnez à votre art la preuve qu'il mérite."
       }
     },
     "blog": {
@@ -270,6 +270,9 @@
       }
     },
     "upload": {
+            "guestDashboardTitle": "Créez un compte pour suivre votre certification",
+            "guestDashboardText": "Vous pourrez y suivre le statut de votre soumission et gérer vos certificats.",
+
       "meta": {
         "title": "Téléchargez vos fichiers",
         "description": "Utilisez un service de transfert gratuit et envoyez-nous le lien via ce formulaire."
@@ -335,7 +338,7 @@
         "artistName": "Nom de l'artiste",
         "description_title_4": "Et attendez notre examen ! Nous reviendrons vers vous rapidement avec les résultats.",
         "description_subtitle_1": "Une fois envoyé, notre équipe examinera votre soumission.",
-        "description_subtitle_21": "• Une preuve d'identité valide (CNI, Passeport, Permis)",
+        "description_subtitle_21": "• Une preuve d'identité",
         "description_subtitle_22": "• Le matériel original : stems, fichiers MIDI, fichiers de projet ou enregistrements créés durant la production",
         "description_subtitle_23": "• Tout fichier additionnel démontrant le processus humain (brouillons, captures d'écran, notes)",
         "uploadTitle": "Télécharger votre dossier pour examen",

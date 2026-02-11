@@ -8,7 +8,7 @@ type FeaturesProps = {
 export const Features = ({ dictionary }: FeaturesProps) => {
   const featureImages = [
     "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=2000&auto=format&fit=crop",
-    "https://www.chainalysis.com/wp-content/uploads/2022/08/shutterstock-2176242673-scaled-1-1500x970.jpg",
+    "https://iq.wiki/cdn-cgi/image/width=1080,quality=70/https://ipfs.everipedia.org/ipfs/QmYSdYU3F16T6tiz66nFVnHjyGeeTWNczx636Hv5iymfjf",
     "https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1000&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2000&auto=format&fit=crop",
   ];

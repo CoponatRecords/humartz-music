@@ -298,7 +298,7 @@ export default async function Pricing({ params }: PricingProps) {
 
             <div className="px-6 py-4 text-muted-foreground">{t.features.certifiedHumanBadges}</div>
             <div className="flex justify-center py-4">
-              <Minus className="h-4 w-4 text-muted-foreground/30" />
+              <Check className="h-5 w-5 text-primary" />
             </div>
             <div className="flex justify-center py-4 bg-muted/20">
               <Check className="h-5 w-5 text-primary" />

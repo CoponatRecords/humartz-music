@@ -15,7 +15,7 @@ import {
 } from "@repo/design-system";
 import { cn } from "@repo/design-system";
 import type { Dictionary } from "@repo/internationalization";
-import { Menu, MoveRight, User, ShieldCheck, LayoutDashboard } from "lucide-react";
+import { Menu, MoveRight, User, ShieldCheck, LayoutDashboard, LogIn } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -165,7 +165,9 @@ export const Header = ({ dictionary }: HeaderProps) => {
               </SignInButton>
               
               <SignInButton mode="modal" fallbackRedirectUrl="/dashboard">
-                <Button size="sm" variant="default">Sign In</Button>
+
+              
+                <Button size="sm" variant="default"><LogIn className="h-3 w-3" />{dictionary.web.header.signIn}</Button>
               </SignInButton>
             </SignedOut>
 
