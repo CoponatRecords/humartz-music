@@ -118,7 +118,7 @@
       },
       "hero": {
         "announcement": "Ancrage désormais disponible sur Arbitrum Mainnet",
-        "ctaPrimary": "Se faire certifier",
+        "ctaPrimary": "Lancer la certification",
         "ctaSecondary": "À propos"
       },
       "cases": {
@@ -308,7 +308,7 @@
       },
       "files": {
         "description": "Téléchargez votre dossier de preuves directement sur nos serveurs pour examen.",
-        "title": "Gestionnaire de fichiers Humartz",
+        "title": "Téléchargez. Certifiez. Protégez.",
         "benefits": [
           {
             "title": "Support Artiste",
@@ -325,7 +325,7 @@
         ],
         "benefitsUpload": [
           {
-            "description": "Si vous ne souhaitez pas passer par un tiers, contactez-nous pour planifier une session de vérification vidéo à distance."
+            "description": "Si vous ne souhaitez pas passer partager vos fichiers, contactez-nous pour planifier une session de vérification vidéo à distance."
           },
           {
             "description": "Membre Producteur ou Label ? Contactez-nous pour des solutions de vérification en masse et des options d'upload dédiées."
