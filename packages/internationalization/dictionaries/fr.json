@@ -87,9 +87,10 @@
       "signUp": "Démarrer la vérification"
     },
     "home": {
+      
       "meta": {
         "title": "Humartz",
-        "subtitle": "Le Standard du Fait-Main",
+        "subtitle": "Certifie la création humaine :",
         "description": "Nous vérifions, certifions et ancrons votre art sur la blockchain pour prouver sa création humaine. Sécurisez votre héritage artistique pour toujours."
       },
       "getStartedTitle": "Démarrez en quelques secondes",
@@ -97,10 +98,9 @@
       "getStartedTags": [
         "Musique",
         "Photographie",
-        "Art Digital",
+        "Arts Numériques",
         "Modèles 3D",
-        "Multi-média"
-      ],
+      "Écriture"     ],
 "getStartedP1": "Face à l’afflux de contenus générés par l’IA, Humartz est le premier protocole qui certifie votre art comme étant réellement créé par l’humain.",
       "getStartedP2": "Nous fournissons un système de preuve de création pour certifier votre travail et protéger votre propriété intellectuelle.",
       "showcase": {

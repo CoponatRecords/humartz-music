@@ -96,6 +96,13 @@
       "signUp": "Start Verification"
     },
     "home": {
+      "getStartedTags": [
+        "Music",
+        "Photography",
+        "Digital Art",
+        "3D Models",
+        "Multi-media"
+      ],
       "meta": {
         "title": "Humartz",
                 "subtitle": "The Standard for Human-Made",

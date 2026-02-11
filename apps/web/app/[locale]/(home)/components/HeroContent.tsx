@@ -29,7 +29,7 @@ export default function HeroContent({ dictionary }: { dictionary: Dictionary }) 
         <h2 className="max-w-4xl font-medium text-xl sm:text-3xl md:text-4xl tracking-tight flex flex-wrap justify-center gap-3">
           <span>{home?.meta?.subtitle}</span>
           <span className="text-primary italic">
-            <WordRotate />
+            <WordRotate words={home?.getStartedTags} />
           </span>
         </h2>
 
