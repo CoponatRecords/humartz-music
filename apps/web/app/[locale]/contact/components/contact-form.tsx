@@ -49,10 +49,10 @@ export const ContactForm = ({ dictionary }: ContactFormProps) => {
   return (
     <div className="w-full py-20 lg:py-40">
       <div className="container mx-auto max-w-6xl">
-        <div className="grid gap-10 lg:grid-cols-2">
+        <div className="grid  lg:grid-cols-2">
           {/* LEFT SIDE: Text & Benefits */}
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-4 m-6 p-6">
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-4 m-6 p-2">
               <div className="flex flex-col gap-2">
                 <h4 className="max-w-xl text-left font-regular text-3xl tracking-tighter md:text-5xl">
                   {dictionary.web.contact.meta.title}
@@ -107,38 +107,7 @@ export const ContactForm = ({ dictionary }: ContactFormProps) => {
                 <form onSubmit={onSubmit} className="flex flex-col gap-4">
                   <p className="font-semibold text-lg">{dictionary.web.contact.hero.form.title}</p>
                   
-                  {/* Date Picker */}
-                  <div className="grid w-full items-center gap-1">
-                    <Label>{dictionary.web.contact.hero.form.date}</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          className={cn(
-                            "w-full justify-start text-left font-normal",
-                            !date && "text-muted-foreground"
-                          )}
-                          variant="outline"
-                          type="button"
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {date ? format(date, "PPP") : <span>Pick a date</span>}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          initialFocus
-                          mode="single"
-                          onSelect={setDate}
-                          selected={date}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <input 
-                        type="hidden" 
-                        name="date" 
-                        value={date ? format(date, "PPP") : ""} 
-                    />
-                  </div>
+                  
 
                   {/* First Name */}
                   <div className="grid w-full items-center gap-1">
@@ -156,12 +125,12 @@ export const ContactForm = ({ dictionary }: ContactFormProps) => {
                   {/* Last Name */}
                   <div className="grid w-full items-center gap-1">
                     <Label htmlFor="lastname">
-                      {dictionary.web.contact.hero.form.lastName}
+                      {dictionary.web.contact.hero.form.email}
                     </Label>
                     <Input 
-                        id="lastname" 
-                        name="lastname" 
-                        type="text" 
+                        id="email" 
+                        name="email" 
+                        type="email" 
                         required 
                     />
                   </div>

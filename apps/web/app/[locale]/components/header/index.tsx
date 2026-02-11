@@ -45,12 +45,12 @@ export const Header = ({ dictionary }: HeaderProps) => {
 
   const isHome = pathname === "/" || /^\/(fr|en)(\/)?$/.test(pathname ?? "");
   const dynamicLink = isHome
-    ? { title: dictionary.web.header.pricing, href: "/pricing" }
+    ? { title: dictionary.web.header.whitepaper, href: "/whitepaper" }
     : { title: dictionary.web.header.home, href: "/" };
 
   // Navigation items updated with Contact
   const navigationItems: NavItem[] = [
-    { title: dictionary.web.header.whitepaper, href: "/whitepaper" },
+    { title: dictionary.web.header.pricing, href: "/pricing" },
         { 
       title: dictionary.web.header.contact || "Contact", 
       href: "/contact" 
@@ -153,7 +153,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
             
             <div className="h-6 border-r mx-1" />
             <LanguageSwitcher />
-            <ModeToggle />
+            {/* <ModeToggle /> */}
             <div className="h-6 border-r mx-1" />
 
             <SignedOut>
@@ -255,7 +255,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
 
                   <div className="mt-auto pt-6 border-t px-2 flex items-center justify-between">
                     <div className="flex gap-2">
-                      <ModeToggle />
+                      {/* <ModeToggle /> */}
                       <LanguageSwitcher />
                     </div>
                   </div>

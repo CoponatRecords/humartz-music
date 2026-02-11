@@ -276,9 +276,10 @@
           }
         ],
         "form": {
+          "email": "Email Address",
           "title": "Get in touch",
           "date": "Date",
-          "firstName": "First & Last Names",
+          "firstName": "Full Name",
           "lastName": "Last name",
           "resume": "Upload press kit (optional)",
           "cta": "Send Message"
@@ -308,7 +309,7 @@
         "form": {
           "title": "Upload your folder",
           "date": "Date",
-          "firstName": "First & Last Names",
+          "firstName": "Full Name",
           "lastName": "Last name",
           "downloadLink": "Download Link",
           "artistName": "Artist Name",

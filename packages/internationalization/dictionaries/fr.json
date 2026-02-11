@@ -290,6 +290,8 @@
           }
         ],
         "form": {
+                    "email": "Adresse Email",
+
           "title": "Soumettre votre dossier",
           "date": "Date",
           "firstName": "Prénom & Nom",
