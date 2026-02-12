@@ -1,5 +1,6 @@
+// middleware.ts (or middleware/index.ts)
 import { authMiddleware } from "@repo/auth/proxy";
-import { internationalizationMiddleware } from "@repo/internationalization/proxy";
+import { internationalizationMiddleware } from "@repo/internationalization/proxy"; // ← we'll assume this is fixed or replaced
 import { parseError } from "@repo/observability/error";
 import { secure } from "@repo/security";
 import {
@@ -8,39 +9,30 @@ import {
   securityMiddleware,
 } from "@repo/security/proxy";
 import { createNEMO } from "@rescale/nemo";
-import { type NextProxy, type NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { env } from "@/env";
 
+// ───────────────────────────────────────────────
+//  CONFIG
+// ───────────────────────────────────────────────
 export const config = {
   matcher: [
     "/((?!_next/static|_next/image|ingest|favicon.ico|robots.txt|sitemap.xml).*)",
   ],
 };
 
+// ───────────────────────────────────────────────
+//  SECURITY HEADERS
+// ───────────────────────────────────────────────
 const securityHeaders = env.FLAGS_SECRET
   ? securityMiddleware(noseconeOptionsWithToolbar)
   : securityMiddleware(noseconeOptions);
 
-// --- CORRECTION : Protection contre les locales invalides ---
-const safeI18nMiddleware = async (request: NextRequest, event: any) => {
-  const acceptLanguage = request.headers.get("accept-language");
-  
-  // Si le header est vide ou bizarre (cas fréquent avec les bots), 
-  // on injecte une valeur par défaut pour éviter le crash de Intl.getCanonicalLocales
-  if (!acceptLanguage || acceptLanguage.includes("*")) {
-    request.headers.set("accept-language", "fr-FR,fr;q=0.9,en;q=0.8");
-  }
-
-  try {
-    return await internationalizationMiddleware(request, event);
-  } catch (e) {
-    console.error("I18n Fallback triggered:", e);
-    return NextResponse.next(); // On laisse passer la requête même si l'i18n crash
-  }
-};
-
+// ───────────────────────────────────────────────
+//  ARCJET BOT PROTECTION
+// ───────────────────────────────────────────────
 const arcjetMiddleware = async (request: NextRequest) => {
-  if (!env.ARCJET_KEY) return;
+  if (!env.ARCJET_KEY) return NextResponse.next();
 
   try {
     await secure(
@@ -51,13 +43,80 @@ const arcjetMiddleware = async (request: NextRequest) => {
       ],
       request
     );
+    return NextResponse.next();
   } catch (error) {
     const message = parseError(error);
     return NextResponse.json({ error: message }, { status: 403 });
   }
 };
 
-// On utilise safeI18nMiddleware à la place de internationalizationMiddleware
+// ───────────────────────────────────────────────
+//  SAFE INTERNATIONALIZATION MIDDLEWARE
+// ───────────────────────────────────────────────
+import Negotiator from "negotiator";
+import { match } from "@formatjs/intl-localematcher"; // or use your own matcher
+
+// Define your supported locales and default
+const locales = ["en", "fr", "es", "de"]; // ← CHANGE THIS to your actual supported locales
+const defaultLocale = "en";
+
+function getLocale(request: NextRequest): string {
+  const acceptLanguage = request.headers.get("accept-language");
+
+  if (!acceptLanguage || acceptLanguage === "*") {
+    return defaultLocale;
+  }
+
+  const negotiatorHeaders: Record<string, string> = {
+    "accept-language": acceptLanguage,
+  };
+
+  const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
+
+  // Handle wildcard or empty case
+  if (languages.length === 0 || (languages.length === 1 && languages[0] === "*")) {
+    return defaultLocale;
+  }
+
+  // Match against supported locales
+  try {
+    const bestMatch = match(languages, locales, defaultLocale);
+    return bestMatch;
+  } catch (err) {
+    console.error("Locale matching failed:", err);
+    return defaultLocale;
+  }
+}
+
+// Replacement / fixed version of internationalizationMiddleware
+const safeI18nMiddleware = async (request: NextRequest) => {
+  const locale = getLocale(request);
+
+  // You can store locale in headers, cookies, rewrite URL, etc.
+  // Most common patterns:
+
+  // Option 1: Add to request headers (popular with next-intl)
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-detected-locale", locale);
+
+  // Option 2: Rewrite to /en/... or /fr/... etc (if using sub-path routing)
+  // if (request.nextUrl.pathname === "/" || !request.nextUrl.pathname.startsWith(`/${locale}`)) {
+  //   return NextResponse.rewrite(
+  //     new URL(`/${locale}${request.nextUrl.pathname}`, request.url)
+  //   );
+  // }
+
+  // For most setups — just pass through with header
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+};
+
+// ───────────────────────────────────────────────
+//  COMPOSE MIDDLEWARE WITH NEMO
+// ───────────────────────────────────────────────
 const composedMiddleware = createNEMO(
   {},
   {
@@ -65,19 +124,23 @@ const composedMiddleware = createNEMO(
   }
 );
 
-export default authMiddleware(async (_auth, request, event) => {
+// ───────────────────────────────────────────────
+//  FINAL MIDDLEWARE (with Clerk)
+// ───────────────────────────────────────────────
+export default authMiddleware(async (_auth, request: NextRequest) => {
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith('/api/webhooks')) {
+  // 1. Bypass for webhooks
+  if (pathname.startsWith("/api/webhooks")) {
     return NextResponse.next();
   }
 
+  // 2. Apply security headers
   const headersResponse = securityHeaders();
 
-  const middlewareResponse = await composedMiddleware(
-    request as unknown as NextRequest,
-    event
-  );
+  // 3. Run composed middleware (i18n + arcjet)
+  const middlewareResponse = await composedMiddleware(request, {});
 
+  // Return the most specific response
   return middlewareResponse || headersResponse;
-}) as unknown as NextProxy;
+}) as any; // Type assertion — common with Clerk + custom middleware
