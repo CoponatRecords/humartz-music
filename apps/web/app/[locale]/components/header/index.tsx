@@ -50,7 +50,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
 
   // Navigation items updated with Contact
   const navigationItems: NavItem[] = [
-    { title: dictionary.web.header.pricing, href: "/pricing" },
+    // { title: dictionary.web.header.pricing, href: "/pricing" },
         { 
       title: dictionary.web.header.contact || "Contact", 
       href: "/contact" 
@@ -58,7 +58,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
     {
       title: dictionary.web.header.product.title,
       description: dictionary.web.header.product.description,
-      items: [{ title: dictionary.web.header.dashboard, href: "/dashboard" }],
+      items: [{ title: dictionary.web.header.pricing, href: "/pricing" }],
     },
 
   ];
